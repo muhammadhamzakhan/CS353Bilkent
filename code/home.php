@@ -93,7 +93,7 @@ function test_input($data) {
 	<div id="postnewtopic">	
 		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
 
-			Comment: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+			Create A New Topic: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
 			<br><br>
 			<?php 
 			$sql = "SELECT name from Category where 1";
@@ -159,9 +159,6 @@ function test_input($data) {
 			?>
 		</ul>
 	</div>
-	
-	<div id="topicbrowser">
-		
-	</div>
+
 </body>
 </html>
