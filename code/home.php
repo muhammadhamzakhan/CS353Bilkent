@@ -9,11 +9,11 @@
 <body>
 	<nav id="navbar">
 		<ul>
-			<li><a href="homepage.html" title="Home Page Link">Home</a></li>
-			<li><a href="messages.html">Messages</a></li>
-			<li><a href="#">Notifications</a></li>
-			<li><a href="settings.html">Settings</a></li>
-			<li><a href="logout.php">Logout</a></li>    
+		  <li><a href="homepage.html" title="Home Page Link">Home</a></li>
+		  <li><a href="messages.html">Messages</a></li>
+		  <li><a href="#">Notifications</a></li>
+		  <li><a href="settings.html">Settings</a></li>
+		  <li><a href="logout.php">Logout</a></li>    
 		</ul>
 	</nav>
 
@@ -39,7 +39,7 @@
 		</ul>
 	</div>
 
-	<div id="favtopicsbar">
+<div id="favtopicsbar">
 		<ul>
 			<?php
 			
@@ -53,6 +53,41 @@
 					$favoritetopicnames[] = $row["ID"];
 					$favoritetopicids[] = $row["content"];
 					echo "<li>".$row["content"]."</li>";
+				}
+			}
+			?>
+		</ul>
+	</div>
+	<div id="friendsactivity">
+		<ul>
+			<?php
+			$db = $conn;
+
+			$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$uid' && isInstanceTopic = 1) ORDER BY date DESC ";
+
+			$lastfentryresult = mysqli_query($db, $lastfentrysql);
+
+			$lentryUsername = array();
+			$lentryUID = array();
+			$lentryContent = array();
+			$lentryID = array();
+			$lentryTopicID = array();
+			$lentryTopicName = array();
+			$ltopicContent = array();
+			$lentryIndex = array();
+
+			$cntr = 0;
+			if(mysqli_num_rows($lastfentryresult) > 0){
+				while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+					$lentryUsername[] = $row["username"];
+					$lentryUID[] = $row["userID"];
+					$lentryContent[] = $row["content"];
+					$lentryID[] = $row["ID"];
+					$lentryTopicID[] = $row["topicsID"];
+					$lentryTopicName[] = $row["topicName"];
+					$ltopicContent[] = $cntr;
+					$cntr = $cntr + 1;
+					echo "<li>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
 				}
 			}
 			?>
