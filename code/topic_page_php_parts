@@ -1,0 +1,27 @@
+//variables
+$userid
+$topicid
+$topictext
+$topicCategory
+$entryContents = array();
+$entryIDs = array();
+//
+
+$sql = "SELECT content FROM Topic WHERE ID = '$topicid'";
+$result = mysqli_query($conn, $sql);
+
+if(mysqli_num_rows($result) > 0){
+  while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+    $topictext = $row["content"];
+  }
+}
+
+$sql = "SELECT categoryName FROM Topic WHERE ID = '$topicid'";
+$result = mysqli_query($conn, $sql);
+
+if(mysqli_num_rows($result) > 0){
+  while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+    $topicCategory = $row["categoryName"];
+  }
+}
+
