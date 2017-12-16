@@ -21,18 +21,18 @@
 		<ul>
 			<?php 
 			include 'connect.php';
-			$uid = $_SESSION['userid'];
-
+	//		$uid = $_SESSION['userid'];
+			$uid = 1;
 			$usertopicsql = "SELECT ID, content FROM topic WHERE userID = '$uid'";
 			$usertopicsresult = mysqli_query($conn, $usertopicsql);
 			$usertopicnames = array();
 			$usertopicids = array();
-
+			
 			if(mysqli_num_rows($usertopicsresult) > 0){
 				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
 					$usertopicids[] = $row["ID"];
-					$usertopicnames[] = $row["content"];	
-
+					$usertopicnames[] = $row["content"];
+					echo "<li>".$row["content"]."</li>";
 				}
 			}
 			?>
@@ -50,9 +50,9 @@
 			
 			if(mysqli_num_rows($favoritetopicsresult) > 0){
 				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
-					$favoritetopicnames[] = $row["topicsID"];
-					$favoritetopicids[] = $row["topicName"];
-					echo "<li>".$row["topicName"]."</li>";
+					$favoritetopicnames[] = $row["ID"];
+					$favoritetopicids[] = $row["content"];
+					echo "<li>".$row["content"]."</li>";
 				}
 			}
 			?>
