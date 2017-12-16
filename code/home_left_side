@@ -23,3 +23,11 @@ if(mysqli_num_rows($tagsqlresult) > 0){
 		$taglist[] = $row["name"];	
 	}
 }
+
+for ($i = 0; $i < ($sizeof($taglist)); $i++){
+	for ($j = 0; $j < ($sizeof($topiccontent)); $j++){
+		if(strcmp($topictag[$j], $taglist[$i]) == 0){
+			//tag matches
+		}	
+	}
+}
