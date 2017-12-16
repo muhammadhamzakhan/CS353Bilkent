@@ -1,89 +1,62 @@
 <?php
-include 'connect.php';
-$username = "";
-$userpass = "";
-$name = "";
-$password = "";
-$email = "";
-$userid = "";
-// if(isset($_POST['username'])){
-//     $user = $_POST['username'];
-// }
+	//connect to the database
+	include 'connect.php';
 
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
+	//initialize variables
+	$username = "";
+	$userpass = "";
+	$name = "";
+	$password = "";
+	$userid = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  	$name = test_input($_POST['username']);
-  	$password = test_input($_POST['password']);
- 	
- 
-
-  	$sql = "SELECT email from User WHERE email = '$name'";
-	$result = $conn->query("sql");
-	if($result){
-		while ($row = $result->fetch_assoc()) {
-			$email = $row['email'];
-			
-		}
+	//function to strip and test the input data
+	function test_input($data) {
+	  $data = trim($data);
+	  $data = stripslashes($data);
+	  $data = htmlspecialchars($data);
+	  return $data;
 	}
 
-	$sql = "SELECT username from User WHERE username = '$name'";
-	$result = $conn->query($sql);
-	if($result){
-		while ($row = $result->fetch_assoc()) {
-			$username = $row['username'];
-		}
-
-	}
-
-	$sql = "SELECT ID from User WHERE username = '$name'";
-	$result = $conn->query($sql);
-	if($result){
-		while ($row = $result->fetch_assoc()) {
-			$userid = $row['ID'];
-		}
-
-	}
-
-	$sql = "SELECT password from User WHERE password = '$password'";
-	$result = $conn->query($sql);
-	if($result){
-		while($row = $result->fetch_assoc()){
-			$userpass = $row['password'];
-
-		}
-	}
-
-	if($name == "" && $password == ""){
-		session_unset(); 
-		session_destroy();
-		header("Location:home.php");
-		exit;
-	}
-
-	if($name == $username || $name = $email){
-		if($password == $userpass){
+	//Upon POST
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		//get the input from the user
+	  	$name = test_input($_POST['username']);
+	  	$password = test_input($_POST['password']);
+	 	
+	 	//if the name and password is blank, destroy session and log in to the home page with no user data
+	 	if($name == "" && $password == ""){
+			session_unset(); 
+			session_destroy();
 			header("Location:home.php");
 			exit;
 		}
-		else{
-			echo "<script>alert('Wrong Password. Please Enter again')</script>";
+		//Else if only one of the fields were left empty, warn the user!
+		else if($name == "" || $password == ""){
+			echo "<script>alert('Name or Password field can not be left blank!')</script>";
+			exit;
+		}
+
+		//Check the name input for the username or email values in database
+		$sql = "SELECT * from User WHERE (username = '$name') or (email = '$name')";
+		$result = $conn->query($sql);
+		if($result){
+			while ($row = $result->fetch_assoc()) {
+				//check the password of that row
+				if($password == $row['password']){
+  					$userid = $row['ID'];
+  					header("Location:home.php");
+				}
+			}
+		}
+
+		//if user id is still blank the login was faulty
+		if($userid== ""){
+			echo "<script>alert('Wrong Username or Password.')</script>";
+			exit;
 		}
 	}
-	else{
-		echo "<script>alert('Wrong Username or Password.')</script>";
-	}
- 	
-}
 
-	$_SESSION['username'] = $username;
-	$_SESSION['email'] = $email;
-	$_SESSION['password'] = $userpass;
+	//assign the session to userid
 	$_SESSION['userid'] = $userid;	
 
 ?>

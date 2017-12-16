@@ -27,3 +27,30 @@ if(mysqli_num_rows($lastfentryresult) > 0){
 		$cntr = $cntr + 1;
 	}
 }
+
+
+*****************
+posted topic
+
+*****************
+ 	
+
+$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userid')) ORDER BY date DESC";
+
+$lastftopicresult = mysqli_query($db, $lastfentrysql);
+
+$ltopicUsername = array();
+$ltopicUID = array();
+$ltopicID = array();
+$ltopicTopicName = array();
+$ltopicDate = array();
+
+if(mysqli_num_rows($lastftopicresult) > 0){
+	while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
+		$ltopicUsername[] = $row["username"];
+		$ltopicUID[] = $row["userID"];
+		$ltopicID[] = $row["ID"];
+		$ltopicTopicName[] = $row["content"];
+		$ltopicDate[] = $row["date"];
+	}
+}
