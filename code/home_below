@@ -1,0 +1,31 @@
+$uid = $SESSION['$userid'];
+$db = $conn;
+
+$lastfentrysql = "WITH FollowedList(ID, UName) AS (SELECT ID, User.username AS UName FROM User
+JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$uid'))
+SELECT * FROM Entry_Combined_View WHERE userID IN FollowedList ORDER BY date DESC";
+
+$lastfentryresult = mysqli_query($db, $lastfentrysql);
+
+$lentryUsername = array();
+$lentryUID = array();
+$lentryContent = array();
+$lentryID = array();
+$lentryTopicID = array();
+$lentryTopicName = array();
+$ltopicContent = array();
+$lentryIndex = array();
+
+int cntr = 0;
+if(mysqli_num_rows($lastfentryresult) > 0){
+	while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+		$lentryUsername[] = $row["username"];
+		$lentryUID[] = $row["userID"];
+		$lentryContent[] = $row["content"];
+		$lentryID[] = $row["ID"];
+		$lentryTopicID[] = $row["topicsID"];
+		$lentryTopicName[] = $row["topicName"];
+		$ltopicContent[] = cntr;
+		$cntr = $cntr + 1;
+	}
+}
