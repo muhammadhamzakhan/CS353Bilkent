@@ -3,8 +3,6 @@
 	include 'connect.php';
 
 	//initialize variables
-	$username = "";
-	$userpass = "";
 	$name = "";
 	$password = "";
 	$userid = "";

@@ -1,0 +1,25 @@
+$db = $conn;
+$topiclistsql = "SELECT * FROM Topic_Combined_View ORDER BY categoryName DESC, date ASC";
+$tagsql = "SELECT * FROM Category DESC";
+
+$topiclistsqlresult = mysqli_query($db, $topiclistsqlresult);
+$tagsqlresult = mysqli_query($db, $tagsql);
+
+$topiccontent = array();
+$topictag = array();
+$taglist = array();
+$topicidlist = array();
+
+if(mysqli_num_rows($topiclistsqlresult) > 0){
+	while($row = mysqli_fetch_array($topiclistsqlresult,MYSQLI_ASSOC)) {
+		$topiccontent[] = $row["content"];
+		$topictag[] = $row["categoryName"];
+		$topicidlist[] = $row["ID"];
+	}
+}
+
+if(mysqli_num_rows($tagsqlresult) > 0){
+	while($row = mysqli_fetch_array($tagsqlresult,MYSQLI_ASSOC)) {
+		$taglist[] = $row["name"];	
+	}
+}
