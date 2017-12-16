@@ -1,8 +1,5 @@
 <?php
 include 'connect.php';
-$username = $_SESSION['username'];
-$email = $_SESSION['email'];
-$userpass = $_SESSION['password'];
 $userID = $_SESSION['userid'];
 $category = "";
 $connected = FALSE;
