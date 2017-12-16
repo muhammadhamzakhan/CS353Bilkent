@@ -66,7 +66,7 @@
 <body>
 <div align="center">
 	<h2><b> Welcome to Servo!</b></h2>
-	Sign Into Your Account or <a href="register.php">Create a New One...</a>
+	Sign Into Your Account or <a href="signup.php">Create a New One...</a>
 	<form method = "post">
 		User Name or Email: <input type="text" name="username" >
   		<br>
