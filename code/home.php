@@ -76,7 +76,6 @@
 			$ltopicContent = array();
 			$lentryIndex = array();
 
-			$cntr = 0;
 			if(mysqli_num_rows($lastfentryresult) > 0){
 				while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
 					$lentryUsername[] = $row["username"];
@@ -85,8 +84,6 @@
 					$lentryID[] = $row["ID"];
 					$lentryTopicID[] = $row["topicsID"];
 					$lentryTopicName[] = $row["topicName"];
-					$ltopicContent[] = $cntr;
-					$cntr = $cntr + 1;
 					echo "<li>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
 				}
 			}
