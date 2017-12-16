@@ -31,6 +31,7 @@
 		//Else if only one of the fields were left empty, warn the user!
 		else if($name == "" || $password == ""){
 			echo "<script>alert('Name or Password field can not be left blank!')</script>";
+			header("Refresh:0");
 			exit;
 		}
 
