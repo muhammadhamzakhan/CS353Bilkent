@@ -7,6 +7,7 @@
 </head>
 
 <body>
+	// test
 	<nav id="navbar">
 		<ul>
 		  <li><a href="homepage.html" title="Home Page Link">Home</a></li>
@@ -59,7 +60,7 @@
 		</ul>
 	</div>
 	
-	<div id="friendsactivity">
+<div id="friendsactivity">
 		<ul>
 			<?php
 			$db = $conn;
@@ -111,6 +112,44 @@
 			}
 			?>
 		</ul>
+	</div>
+	<div id="leftbar">
+		<?php
+		$db = $conn;
+$topiclistsql = "SELECT * FROM Topic_Combined_View ORDER BY categoryName DESC, date ASC";
+$tagsql = "SELECT * FROM Category DESC";
+
+$topiclistsqlresult = mysqli_query($db, $topiclistsqlresult);
+$tagsqlresult = mysqli_query($db, $tagsql);
+
+$topiccontent = array();
+$topictag = array();
+$taglist = array();
+$topicidlist = array();
+
+if(mysqli_num_rows($topiclistsqlresult) > 0){
+	while($row = mysqli_fetch_array($topiclistsqlresult,MYSQLI_ASSOC)) {
+		$topiccontent[] = $row["content"];
+		$topictag[] = $row["categoryName"];
+		$topicidlist[] = $row["ID"];
+	}
+}
+
+if(mysqli_num_rows($tagsqlresult) > 0){
+	while($row = mysqli_fetch_array($tagsqlresult,MYSQLI_ASSOC)) {
+		$taglist[] = $row["name"];	
+	}
+}
+
+
+for ($i = 0; $i < ($sizeof($taglist)); $i++){
+	for ($j = 0; $j < ($sizeof($topiccontent)); $j++){
+		if(strcmp($topictag[$j], $taglist[$i]) == 0){
+			//tag matches
+		}	
+	}
+}
+	?>
 	</div>
 </body>
 </html>
