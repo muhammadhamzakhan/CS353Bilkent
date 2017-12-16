@@ -1,5 +1,16 @@
+//open up a new page and execute code below
+
 $uid = $userid;
 $searchBarInput;
+
+$usernames = array();
+$userids = array();
+$entryids = array();
+$entrycontents = array();
+$entryownernames = array();
+$topicids = array();
+$topiccontents = array();
+$topicownernames = array();
 
 $searchusersql = "SELECT​ ​ ID,​ ​ username​ ​ FROM​ ​ User​ ​ WHERE​ ​ username​ ​ LIKE​ ​ (“%'$searchBarInput'%”)";
 $searchtopicsql = "SELECT​ ​ ID,​ ​ content,​ ​ username​ ​ FROM​ ​ topic ​ WHERE​ ​ username​ ​ LIKE​ ​ (“%'$searchBarInput'%”)
@@ -11,14 +22,6 @@ $searchuserresult = mysqli_query($db, $searchusersql);
 $searchtopicresult = mysqli_query($db, $searchtopicsql);
 $searchentryresult = mysqli_query($db, $searchentrysql);
 
-$usernames = array();
-$userids = array();
-$entryids = array();
-$entrycontents = array();
-$entryownernames = array();
-$topicids = array();
-$topiccontents = array();
-$topicownernames = array();
 
 
 if(mysqli_num_rows($searchuserresult) > 0){
@@ -44,3 +47,5 @@ if(mysqli_num_rows($searchtopicresult) > 0){
 		$topicownernames[] = $row["username"];
 	}
 }
+ 
+
