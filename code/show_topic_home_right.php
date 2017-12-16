@@ -12,7 +12,7 @@ if(mysqli_num_rows($usertopicsresult) > 0){
 }
 
 $favoritetopicsql = "SELECT​ ​ * ​ ​ FROM​ ​ Topic_Combined_View​ ​ WHERE​ ​ ID​ ​ in​ ​ (SELECT​ ​ Favorite.contentID​ ​ FROM
-Favorite​ ​ WHERE​ ​ userID​ ​ = ​ ​ '$userID'​ ​ &&​ ​ isInstanceTopic​ ​ = ​ ​ 1)​ ​ ORDER​ ​ BY​ ​ date​ ​ DESC";
+Favorite​ ​ WHERE​ ​ userID​ ​ = ​ ​ '$userID'​ ​&&​ ​isInstanceTopic​ ​ = ​ ​ 1)​ ​ ORDER​ ​ BY​ ​ date​ ​ DESC";
 $favoritetopicsresult = mysqli_query($db, $favoritetopicsql);
 $favoritetopicnames = array();
 $favoritetopicids = array();
