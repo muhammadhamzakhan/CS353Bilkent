@@ -3,10 +3,16 @@ $userid
 $topicid
 $topictext
 $topicCategory
+$report_message
+$is_Entry_Reported
 $entryContents = array();
 $entryIDs = array();
+$entryRatings = array();
+$entryOwnerNames = array();
+$entryOwnerIDs = array();
 //
 
+//topic content
 $sql = "SELECT content FROM Topic WHERE ID = '$topicid'";
 $result = mysqli_query($conn, $sql);
 
@@ -16,6 +22,7 @@ if(mysqli_num_rows($result) > 0){
   }
 }
 
+//topic category
 $sql = "SELECT categoryName FROM Topic WHERE ID = '$topicid'";
 $result = mysqli_query($conn, $sql);
 
@@ -25,3 +32,28 @@ if(mysqli_num_rows($result) > 0){
   }
 }
 
+//entry listings
+$sql = "SELECT * Entry_Combined_View FROM Topic WHERE topicsID = '$topicid'";
+$result = mysqli_query($conn, $sql);
+
+if(mysqli_num_rows($result) > 0){
+  while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+    $entryContents = $row["content"];
+    $entryIDs = $row["ID"];
+    $entryRatings $row["rating"];
+    $entryOwnerNames = $row["username"];
+    $entryOwnerIDs = $row[userID];
+  }
+}
+
+//reporting
+
+//if topic is reported
+$is_Entry_Reported = 0;
+
+//if entry is reported
+$is_Entry_Reported = 1;
+
+//then
+$sql = "INSERT INTO Report (userID, reportedID, message, reportType) VALUES ('$userid', '$topicid', '$report_message', '$is_Entry_Reported');
+$result = mysqli_query($conn, $sql);
