@@ -1,57 +1,63 @@
 <?php
-	include 'connect.php';
-	$username = $_SESSION['username'];
-	$email = $_SESSION['email'];
-	$userpass = $_SESSION['password'];
-	$userID = $_SESSION['userid'];
-	$category = "";
-	$connected = FALSE;
-	if($username != "" or $email != ""){
-		$connected = TRUE;
+include 'connect.php';
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+$userpass = $_SESSION['password'];
+$userID = $_SESSION['userid'];
+$category = "";
+$connected = FALSE;
+if($username != "" or $email != ""){
+	$connected = TRUE;
+}
+$comment = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if (empty($_POST["comment"])) {
+		$comment = "";
+	} else {
+		$comment = test_input($_POST["comment"]);
 	}
-	$comment = "";
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  		if (empty($_POST["comment"])) {
-    		$comment = "";
-  		} else {
-    		$comment = test_input($_POST["comment"]);
-  		}
-   		$category = test_input($_POST["Category"]);
-   		$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
-   		$conn->query($sql);
-	}
+	$category = test_input($_POST["Category"]);
+	$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
+	$conn->query($sql);
+}
+
 function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
+	$data = trim($data);
+	$data = stripslashes($data);
+	$data = htmlspecialchars($data);
+	return $data;
 }
 ?>
+
 <!doctype html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>Servo Home Page </title>
-<link href="css/navbar.css" rel="stylesheet" type="text/css">
+	<link href="css/navbar.css" rel="stylesheet" type="text/css">
 </head>
-<nav id="navbar">
+
+<body>
+
+	<nav id="navbar">
 		<ul>
-		  <li><a href="homepage.html" title="Home Page Link">Home</a></li>
-		  <li><a href="messages.html">Messages</a></li>
-		  <li><a href="#">Notifications</a></li>
-		  <li><a href="settings.html">Settings</a></li>
-		  <li><a href="logout.php">Logout</a></li>    
+			<li><a href="homepage.html" title="Home Page Link">Home</a></li>
+			<li><a href="messages.html">Messages</a></li>
+			<li><a href="#">Notifications</a></li>
+			<li><a href="settings.html">Settings</a></li>
+			<li><a href="logout.php">Logout</a></li>    
 		</ul>
 	</nav>
-<div id="usertopicsbar">
+
+	<div id="usertopicsbar">
 		<ul>
 			<?php 
-	//		$uid = $_SESSION['userid'];
+
 			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
 			$usertopicsresult = mysqli_query($conn, $usertopicsql);
 			$usertopicnames = array();
 			$usertopicids = array();
-			
+
 			if(mysqli_num_rows($usertopicsresult) > 0){
 				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
 					$usertopicids[] = $row["ID"];
@@ -59,18 +65,20 @@ function test_input($data) {
 					echo "<li>".$row["content"]."</li>";
 				}
 			}
+
 			?>
 		</ul>
 	</div>
+
 	<div id="favtopicsbar">
-		<ul>
+		<ul>	
 			<?php
-			
+
 			$favoritetopicsql = "SELECT * FROM Topic_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC";
 			$favoritetopicsresult = mysqli_query($conn, $favoritetopicsql);
 			$favoritetopicnames = array();
 			$favoritetopicids = array();
-			
+
 			if(mysqli_num_rows($favoritetopicsresult) > 0){
 				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
 					$favoritetopicnames[] = $row["ID"];
@@ -80,26 +88,32 @@ function test_input($data) {
 			}
 			?>
 		</ul>
-	</div>	
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
- 
-  Comment: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
-  <br><br>
-  <?php 
-  		$sql = "SELECT name from Category where 1";
-		$result = $conn->query($sql);
-		if($result){
-			echo "<select name='Category'>";
-			echo '<option value = "" disabled selected>Category</option>';
-			while ($row = $result->fetch_assoc()) {
-				echo '<option value="'.$row['name'].'">'.$row['name'].'</option>';
+	</div>
+
+	<div id="postnewtopic">	
+		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+
+			Comment: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+			<br><br>
+			<?php 
+			$sql = "SELECT name from Category where 1";
+			$result = $conn->query($sql);
+			if($result)
+			{
+				echo "<select name='Category'>";
+				echo '<option value = "" disabled selected>Category</option>';
+				while ($row = $result->fetch_assoc()) 
+				{
+					echo '<option value="'.$row['name'].'">'.$row['name'].'</option>';
+				}
+				echo '</select>';// Close your drop down box		
 			}
-			echo '</select>';// Close your drop down box
-			
-		}
-   ?>
-  <input type="submit" name="submit" value="Submit">  
-<div id="friendsactivity">
+			?>
+			<input type="submit" name="submit" value="Submit">
+		</form>
+	</div>
+
+	<div id="friendsactivity">
 		<ul>
 			<?php
 			$db = $conn;
@@ -144,6 +158,10 @@ function test_input($data) {
 			}
 			?>
 		</ul>
+	</div>
+	
+	<div id="topicbrowser">
+		
 	</div>
 </body>
 </html>
