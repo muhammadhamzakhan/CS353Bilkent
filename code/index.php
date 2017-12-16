@@ -5,6 +5,7 @@ $userpass = "";
 $name = "";
 $password = "";
 $email = "";
+$userid = "";
 // if(isset($_POST['username'])){
 //     $user = $_POST['username'];
 // }
@@ -36,6 +37,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if($result){
 		while ($row = $result->fetch_assoc()) {
 			$username = $row['username'];
+		}
+
+	}
+
+	$sql = "SELECT ID from User WHERE username = '$name'";
+	$result = $conn->query($sql);
+	if($result){
+		while ($row = $result->fetch_assoc()) {
+			$userid = $row['ID'];
 		}
 
 	}
@@ -74,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$_SESSION['username'] = $username;
 	$_SESSION['email'] = $email;
 	$_SESSION['password'] = $userpass;
-	
+	$_SESSION['userid'] = $userid;	
 
 ?>
 <!DOCTYPE html>
