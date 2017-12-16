@@ -23,7 +23,7 @@
 			include 'connect.php';
 	//		$uid = $_SESSION['userid'];
 			$uid = 1;
-			$usertopicsql = "SELECT ID, content FROM topic WHERE userID = '$uid'";
+			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$uid'";
 			$usertopicsresult = mysqli_query($conn, $usertopicsql);
 			$usertopicnames = array();
 			$usertopicids = array();
