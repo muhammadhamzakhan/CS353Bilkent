@@ -1,5 +1,5 @@
 <?php
-include 'bootstrap/connect.php';
+include 'connect.php';
 $userID = $_SESSION['userid'];
 $category = "";
 $connected = FALSE;
@@ -42,6 +42,7 @@ function test_input($data) {
 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
+	  
   </head>
   <body style="padding-top: 70px">
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
@@ -81,11 +82,11 @@ function test_input($data) {
             <button type="submit" class="btn btn-default">Submit</button>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="bootstrap/homepage.html" title="Home Page Link">Home</a></li>
-            <li><a href="bootstrap/messages.html">Messages</a></li>
+            <li><a href="home.php" title="Home Page Link">Home</a></li>
+            <li><a href="#">Messages</a></li>
             <li><a href="#">Notifications</a></li>
-            <li><a href="bootstrap/settings.html">Settings</a></li>
-            <li><a href="bootstrap/logout.php">Logout</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="logout.php">Logout</a></li>
             <li class="dropdown">
               <ul class="dropdown-menu">
                 <li><a href="#">Action</a></li>
@@ -102,8 +103,10 @@ function test_input($data) {
       <!-- /.container-fluid -->
     </nav>
     <div class="row">
-      <div class="col-sm-4" id="topicbrowser">
-		  <h3>Browse Existing Topics:</h3>
+  <div class="col-sm-3" id="topicbrowser">		  
+    <h3>Browse Existing Topics:</h3>
+	    <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+			
 			<?php		
 		
 			$db = $conn;
@@ -131,26 +134,41 @@ function test_input($data) {
 				while($row = mysqli_fetch_array($tagsqlresult,MYSQLI_ASSOC)) {
 					$taglist[] = $row["name"];	
 				}
-			}
-
-			for ($i = 0; $i < (sizeof($taglist)); $i++){
-				echo $taglist[$i]."<br>";	// Categories
-				for ($j = 0; $j < (sizeof($topiccontent)); $j++){
-					if(strcmp($topictag[$j], $taglist[$i]) == 0){
-						//tag matches					
-						echo $topiccontent[$j]."<br>";	// Topics				
+			}			
+	
+			for ($i = 0; $i < (sizeof($taglist)); $i++)
+			{
+				// Categories
+				echo "<div class='panel panel-default'>";
+		      	echo "<div class='panel-heading' role='tab'>";
+//		        echo "<h4 class='panel-title'><a data-toggle='collapse' data-parent='#accordion1'";
+		//		echo "<h4 class='panel-title'><a data-parent='#accordion1'";
+		//		echo "href='#collapseOne1'>".$taglist[$i]."</a></h4>";
+				echo "<h4 class='panel-title'>".$taglist[$i]."</a></h4>";
+	          	echo "</div>";	
+				for ($j = 0; $j < (sizeof($topiccontent)); $j++)
+				{
+					if(strcmp($topictag[$j], $taglist[$i]) == 0)
+					{
+						//tag matches
+						// Topics
+						echo "<div id='collapseOne1' class='panel-collapse collapse in'>";
+		        		echo "<div class='panel-body'>".$topiccontent[$j]."</div>";
+	          			echo "</div>";					
 					}	
-				}
+				}				
+	      		echo "</div>";
 			}
-			?>	
+			?>
 		</div>
+	</div>		
 		
-      <div class="col-sm-4" id = "middlecolumn">
-		<div id="postnewtopic">	
+	  <div class="col-sm-5" id = "middlecolumn">
+  <div id="postnewtopic">	
 			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
 
 			    <h3>Create A New Topic:</h3>
-                  <textarea name="comment" rows="2"><?php echo $comment;?></textarea>
+                  <textarea name="comment" rows="3" style="width:100%;"><?php echo $comment;?></textarea>
 				<br><br>
 				<?php 
 				$sql = "SELECT name from Category where 1";
@@ -172,7 +190,7 @@ function test_input($data) {
 		
 	<div id="friendsactivity">
 		<h3>Your Friends' Activity Is As Following: </h3>
-		<ul>
+		<ul class="list-group">
 				<?php
 				$db = $conn;
 				$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC ";
@@ -193,7 +211,7 @@ function test_input($data) {
 						$lentryID[] = $row["ID"];
 						$lentryTopicID[] = $row["topicsID"];
 						$lentryTopicName[] = $row["topicName"];
-						echo "<li>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
+						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
 					}
 				}
 
@@ -211,7 +229,7 @@ function test_input($data) {
 						$ltopicID[] = $row["ID"];
 						$ltopicTopicName[] = $row["content"];
 						$ltopicDate[] = $row["date"];
-						echo "<li>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
+						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
 					}
 				}
 				?>
@@ -221,7 +239,7 @@ function test_input($data) {
       <div class="col-sm-4" id="rightbar">
 		<div id="usertopicsbar">
 	<h3>Your Topics:</h3>
-		<ul>
+		<ul class="list-group">
 			<?php 
 
 			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
@@ -233,7 +251,7 @@ function test_input($data) {
 				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
 					$usertopicids[] = $row["ID"];
 					$usertopicnames[] = $row["content"];
-					echo "<li>".$row["content"]."</li>";
+					echo "<li class='list-group-item'>".$row["content"]."</li>";
 				}
 			}
 
@@ -243,7 +261,7 @@ function test_input($data) {
 	
 	<div id="favtopicsbar">
 		<h3>Your Favorite Topics:</h3>
-		<ul>	
+		<ul class="list-group">	
 			<?php
 
 			$favoritetopicsql = "SELECT * FROM Topic_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC";
@@ -255,7 +273,7 @@ function test_input($data) {
 				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
 					$favoritetopicnames[] = $row["ID"];
 					$favoritetopicids[] = $row["content"];
-					echo "<li>".$row["content"]."</li>";
+					echo "<li class='list-group-item'>".$row["content"]."</li>";
 				}
 			}
 			?>
