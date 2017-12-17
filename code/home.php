@@ -156,6 +156,50 @@ function test_input($data) {
 			?>
 		</ul>
 	</div>
+	
+	<div id="topicbrowser">
+		<ul id="categories">			
+			<?php		
+
+			$topiclistsql = "SELECT * FROM Topic_Combined_View ORDER BY categoryName DESC, date ASC";
+			$tagsql = "SELECT * FROM Category";
+
+			$topiclistsqlresult = mysqli_query($db, $topiclistsql);
+			$tagsqlresult = mysqli_query($db, $tagsql);
+
+			$topiccontent = array();
+			$topictag = array();
+			$taglist = array();
+			$topicidlist = array();
+
+			if(mysqli_num_rows($topiclistsqlresult) > 0){
+				while($row = mysqli_fetch_array($topiclistsqlresult,MYSQLI_ASSOC)) {
+					$topiccontent[] = $row["content"];
+					$topictag[] = $row["categoryName"];
+					$topicidlist[] = $row["ID"];
+				}
+			}
+
+			if(mysqli_num_rows($tagsqlresult) > 0){
+				while($row = mysqli_fetch_array($tagsqlresult,MYSQLI_ASSOC)) {
+					$taglist[] = $row["name"];	
+				}
+			}
+
+			for ($i = 0; $i < (sizeof($taglist)); $i++){
+				echo $taglist[$i]."<br>";	// Categories
+				echo "<ul id="topics">";
+				for ($j = 0; $j < (sizeof($topiccontent)); $j++){
+					if(strcmp($topictag[$j], $taglist[$i]) == 0){
+						//tag matches					
+						echo $topiccontent[$j]."<br>";	// Topics				
+					}	
+				}
+				echo "</ul>";
+			}
+			?>				
+		</ul>
+</div>
 
 </body>
 </html>
