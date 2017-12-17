@@ -51,14 +51,15 @@
 		//if user id is still blank the login was faulty
 		if($userid== ""){
 			echo "<script>alert('Wrong Username or Password.')</script>";
+			header("Refresh:0");
 			exit;
 		}
 	}
 
 	//assign the session to userid
 	$_SESSION['userid'] = $userid;	
-
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
