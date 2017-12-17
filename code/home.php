@@ -47,7 +47,8 @@ function test_input($data) {
 	</div>
 	<br>
 	
-	<div id="topicbrowser">			
+	<div id="topicbrowser">
+		<h2>Browse Existing Topics:</h2>
 			<?php		
 		
 			$db = $conn;
@@ -93,7 +94,8 @@ function test_input($data) {
 		<div id="postnewtopic">	
 			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
 
-				Create A New Topic: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+			    <h2>Create A New Topic:</h2>
+                  <textarea name="comment" rows="2"  cols="70"><?php echo $comment;?></textarea>
 				<br><br>
 				<?php 
 				$sql = "SELECT name from Category where 1";
@@ -109,11 +111,12 @@ function test_input($data) {
 					echo '</select>';// Close your drop down box		
 				}
 				?>
-				<input type="submit" name="submit" value="Submit">
+				<input type="submit" name="submit" value="Submit">				
 			</form>
 		</div>
 		
 	<div id="friendsactivity">
+		<h2>Your Friends' Activity Is As Following: </h2>
 		<ul>
 				<?php
 				$db = $conn;
@@ -162,6 +165,7 @@ function test_input($data) {
 	</div>
 	
 <div id="usertopicsbar">
+	<h2>Your Topics:</h2>
 		<ul>
 			<?php 
 
@@ -186,6 +190,7 @@ function test_input($data) {
 	
 	
 	<div id="favtopicsbar">
+		<h2>Your Favorite Topics:</h2>
 		<ul>	
 			<?php
 

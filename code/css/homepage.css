@@ -18,11 +18,18 @@
 	border-color: #000000;
 }
 #middlecolumn {
-	width: 50%;
+	width: 45%;
 	float: left;
 	border-style: solid;
 	border-color: #000000;
 }
+div {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
 #navbar li  {
 	display: inline;
 	float: right;
@@ -31,4 +38,6 @@
 }
 #navbar {
 	width: 100%;
+}
+#postnewtopic form textarea {
 }
