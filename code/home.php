@@ -111,7 +111,7 @@ function test_input($data) {
 					echo '</select>';// Close your drop down box		
 				}
 				?>
-				<input type="submit" name="submit" value="Submit">				
+				<input type="submit" name="submit" value="Create">				
 			</form>
 		</div>
 		
@@ -184,10 +184,7 @@ function test_input($data) {
 
 			?>
 	</ul>
-	</div>
-	
-	
-	
+	</div>	
 	
 	<div id="favtopicsbar">
 		<h2>Your Favorite Topics:</h2>
