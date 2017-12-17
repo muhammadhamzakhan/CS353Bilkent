@@ -63,24 +63,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servo</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servo</title>
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
 <body>
-<div align="center">
-	<h2><b> Welcome to Servo!</b></h2>
-	Sign Into Your Account or <a href="signup.php">Create a New One...</a>
+<div class="container-fluid" align="center">
+	<h1>Welcome to Servo!</h1>
+	<h3>Sign Into Your Account or <a href="signup.php">Create a New One...</a></h3>
+	<br>
+	
 	<form method = "post">
-		User Name or Email: <input type="text" name="username" >
-  		<br>
-  		Password: <input type="text" name="password" > 
-  		<br>
-  		<input type="submit" value="Lets Go!">     
-	</form>
-	<form action="reset.php">
-    <input type="submit" value="Reset Password?" />
-	</form	
-
-</div>
+		<div class="row">
+			<div class="form-group">	   
+				<div class="col-sm-3 col-sm-offset-1">
+					<label for="exampleInputEmail1">User Name or Email:</label>
+				</div>
+				<div class="col-sm-4 col-sm-offset-0">
+					<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username or email" name="username">
+					<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+				</div>
+			</div>
+      	</div>
+	  	<br>
+		
+		<div class="row">
+      		<div class="form-group">
+				<div class="col-sm-offset-1 col-sm-3">
+        			<label for="exampleInputPassword1">Password:</label>
+				</div>	
+				<div class="col-sm-4">
+        			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+				</div>
+      		</div>
+	    </div>
+		<br>
+		
+		<div class="row">
+			<div class="col-sm-4 col-sm-offset-0">
+				<label>Or Explore Servo Without An Account:</label>
+			</div>
+			<div class="col-sm-4">
+      			<button type="submit" class="btn btn-primary">Lets Go!</button>
+			</div>
+		</div>
+  </form>
+</div>	  
 
 </body>
 </html>
