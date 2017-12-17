@@ -31,12 +31,12 @@ function test_input($data) {
 <head>
 	<meta charset="utf-8">
 	<title>Servo Home Page </title>
-	<link href="css/navbar.css" rel="stylesheet" type="text/css">
+<link href="css/homepage.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-	<nav id="navbar">
+	<div id="navbar">
 		<ul>
 			<li><a href="homepage.html" title="Home Page Link">Home</a></li>
 			<li><a href="messages.html">Messages</a></li>
@@ -44,122 +44,13 @@ function test_input($data) {
 			<li><a href="settings.html">Settings</a></li>
 			<li><a href="logout.php">Logout</a></li>    
 		</ul>
-	</nav>
-
-	<div id="usertopicsbar">
-		<ul>
-			<?php 
-
-			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
-			$usertopicsresult = mysqli_query($conn, $usertopicsql);
-			$usertopicnames = array();
-			$usertopicids = array();
-
-			if(mysqli_num_rows($usertopicsresult) > 0){
-				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
-					$usertopicids[] = $row["ID"];
-					$usertopicnames[] = $row["content"];
-					echo "<li>".$row["content"]."</li>";
-				}
-			}
-
-			?>
-		</ul>
 	</div>
-
-	<div id="favtopicsbar">
-		<ul>	
-			<?php
-
-			$favoritetopicsql = "SELECT * FROM Topic_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC";
-			$favoritetopicsresult = mysqli_query($conn, $favoritetopicsql);
-			$favoritetopicnames = array();
-			$favoritetopicids = array();
-
-			if(mysqli_num_rows($favoritetopicsresult) > 0){
-				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
-					$favoritetopicnames[] = $row["ID"];
-					$favoritetopicids[] = $row["content"];
-					echo "<li>".$row["content"]."</li>";
-				}
-			}
-			?>
-		</ul>
-	</div>
-
-	<div id="postnewtopic">	
-		<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-
-			Create A New Topic: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
-			<br><br>
-			<?php 
-			$sql = "SELECT name from Category where 1";
-			$result = $conn->query($sql);
-			if($result)
-			{
-				echo "<select name='Category'>";
-				echo '<option value = "" disabled selected>Category</option>';
-				while ($row = $result->fetch_assoc()) 
-				{
-					echo '<option value="'.$row['name'].'">'.$row['name'].'</option>';
-				}
-				echo '</select>';// Close your drop down box		
-			}
-			?>
-			<input type="submit" name="submit" value="Submit">
-		</form>
-	</div>
-
-	<div id="friendsactivity">
-		<ul>
-			<?php
-			$db = $conn;
-			$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC ";
-			$lastfentryresult = mysqli_query($db, $lastfentrysql);
-			$lentryUsername = array();
-			$lentryUID = array();
-			$lentryContent = array();
-			$lentryID = array();
-			$lentryTopicID = array();
-			$lentryTopicName = array();
-			$ltopicContent = array();
-			$lentryIndex = array();
-			if(mysqli_num_rows($lastfentryresult) > 0){
-				while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
-					$lentryUsername[] = $row["username"];
-					$lentryUID[] = $row["userID"];
-					$lentryContent[] = $row["content"];
-					$lentryID[] = $row["ID"];
-					$lentryTopicID[] = $row["topicsID"];
-					$lentryTopicName[] = $row["topicName"];
-					echo "<li>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
-				}
-			}
-			
-			$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
-			$lastftopicresult = mysqli_query($db, $lastfentrysql);
-			$ltopicUsername = array();
-			$ltopicUID = array();
-			$ltopicID = array();
-			$ltopicTopicName = array();
-			$ltopicDate = array();
-			if(mysqli_num_rows($lastftopicresult) > 0){
-				while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
-					$ltopicUsername[] = $row["username"];
-					$ltopicUID[] = $row["userID"];
-					$ltopicID[] = $row["ID"];
-					$ltopicTopicName[] = $row["content"];
-					$ltopicDate[] = $row["date"];
-					echo "<li>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
-				}
-			}
-			?>
-		</ul>
-	</div>
+	<br>
 	
-	<div id="topicbrowser">
-		<ul id="categories">			
+	<div id="topicbrowser">			
 			<?php		
+		
+			$db = $conn;
 
 			$topiclistsql = "SELECT * FROM Topic_Combined_View ORDER BY categoryName DESC, date ASC";
 			$tagsql = "SELECT * FROM Category";
@@ -188,18 +79,132 @@ function test_input($data) {
 
 			for ($i = 0; $i < (sizeof($taglist)); $i++){
 				echo $taglist[$i]."<br>";	// Categories
-				echo "<ul id="topics">";
 				for ($j = 0; $j < (sizeof($topiccontent)); $j++){
 					if(strcmp($topictag[$j], $taglist[$i]) == 0){
 						//tag matches					
 						echo $topiccontent[$j]."<br>";	// Topics				
 					}	
 				}
-				echo "</ul>";
 			}
-			?>				
+			?>	
+	</div>
+
+<div id = middlecolumn>
+		<div id="postnewtopic">	
+			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+
+				Create A New Topic: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
+				<br><br>
+				<?php 
+				$sql = "SELECT name from Category where 1";
+				$result = $conn->query($sql);
+				if($result)
+				{
+					echo "<select name='Category'>";
+					echo '<option value = "" disabled selected>Category</option>';
+					while ($row = $result->fetch_assoc()) 
+					{
+						echo '<option value="'.$row['name'].'">'.$row['name'].'</option>';
+					}
+					echo '</select>';// Close your drop down box		
+				}
+				?>
+				<input type="submit" name="submit" value="Submit">
+			</form>
+		</div>
+		
+	<div id="friendsactivity">
+		<ul>
+				<?php
+				$db = $conn;
+				$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC ";
+				$lastfentryresult = mysqli_query($db, $lastfentrysql);
+				$lentryUsername = array();
+				$lentryUID = array();
+				$lentryContent = array();
+				$lentryID = array();
+				$lentryTopicID = array();
+				$lentryTopicName = array();
+				$ltopicContent = array();
+				$lentryIndex = array();
+				if(mysqli_num_rows($lastfentryresult) > 0){
+					while($row = mysqli_fetch_array($lastfentryresult,MYSQLI_ASSOC)) {
+						$lentryUsername[] = $row["username"];
+						$lentryUID[] = $row["userID"];
+						$lentryContent[] = $row["content"];
+						$lentryID[] = $row["ID"];
+						$lentryTopicID[] = $row["topicsID"];
+						$lentryTopicName[] = $row["topicName"];
+						echo "<li>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
+					}
+				}
+
+				$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
+				$lastftopicresult = mysqli_query($db, $lastfentrysql);
+				$ltopicUsername = array();
+				$ltopicUID = array();
+				$ltopicID = array();
+				$ltopicTopicName = array();
+				$ltopicDate = array();
+				if(mysqli_num_rows($lastftopicresult) > 0){
+					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
+						$ltopicUsername[] = $row["username"];
+						$ltopicUID[] = $row["userID"];
+						$ltopicID[] = $row["ID"];
+						$ltopicTopicName[] = $row["content"];
+						$ltopicDate[] = $row["date"];
+						echo "<li>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
+					}
+				}
+				?>
 		</ul>
-</div>
+		</div>
+	</div>
+	
+<div id="usertopicsbar">
+		<ul>
+			<?php 
+
+			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
+			$usertopicsresult = mysqli_query($conn, $usertopicsql);
+			$usertopicnames = array();
+			$usertopicids = array();
+
+			if(mysqli_num_rows($usertopicsresult) > 0){
+				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
+					$usertopicids[] = $row["ID"];
+					$usertopicnames[] = $row["content"];
+					echo "<li>".$row["content"]."</li>";
+				}
+			}
+
+			?>
+	</ul>
+	</div>
+	
+	
+	
+	
+	<div id="favtopicsbar">
+		<ul>	
+			<?php
+
+			$favoritetopicsql = "SELECT * FROM Topic_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC";
+			$favoritetopicsresult = mysqli_query($conn, $favoritetopicsql);
+			$favoritetopicnames = array();
+			$favoritetopicids = array();
+
+			if(mysqli_num_rows($favoritetopicsresult) > 0){
+				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
+					$favoritetopicnames[] = $row["ID"];
+					$favoritetopicids[] = $row["content"];
+					echo "<li>".$row["content"]."</li>";
+				}
+			}
+			?>
+		</ul>
+	</div>
+
 
 </body>
 </html>

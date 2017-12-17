@@ -1,0 +1,34 @@
+@charset "utf-8";
+#usertopicsbar {
+	float: right;
+	width: 22%;
+	border-style: solid;
+	border-color: #030303;
+}
+#favtopicsbar {
+	width: 22%;
+	float: right;
+	border-style: solid;
+	border-color: #020202;
+}
+#topicbrowser {
+	width: 25%;
+	float: left;
+	border-style: solid;
+	border-color: #000000;
+}
+#middlecolumn {
+	width: 50%;
+	float: left;
+	border-style: solid;
+	border-color: #000000;
+}
+#navbar li  {
+	display: inline;
+	float: right;
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#navbar {
+	width: 100%;
+}
