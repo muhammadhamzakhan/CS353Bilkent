@@ -145,7 +145,9 @@ function test_input($data) {
 		//		echo "<h4 class='panel-title'><a data-parent='#accordion1'";
 		//		echo "href='#collapseOne1'>".$taglist[$i]."</a></h4>";
 				echo "<h4 class='panel-title'>".$taglist[$i]."</a></h4>";
-	          	echo "</div>";	
+	          	echo "</div>";
+				
+				echo "<ul class='list-group'>";
 				for ($j = 0; $j < (sizeof($topiccontent)); $j++)
 				{
 					if(strcmp($topictag[$j], $taglist[$i]) == 0)
@@ -153,10 +155,11 @@ function test_input($data) {
 						//tag matches
 						// Topics
 						echo "<div id='collapseOne1' class='panel-collapse collapse in'>";
-		        		echo "<div class='panel-body'>".$topiccontent[$j]."</div>";
+		        		echo "<div class='panel-body'>"."<a href='topic.php?varname=$topicidlist[$j] class='list-group-item list-group-item-action'>".$topiccontent[$j]."</a>"."</div>";
 	          			echo "</div>";					
 					}	
-				}				
+				}
+				echo "</ul>";
 	      		echo "</div>";
 			}
 			?>
@@ -219,18 +222,11 @@ function test_input($data) {
 
 				$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
 				$lastftopicresult = mysqli_query($db, $lastfentrysql);
-				$ltopicUsername = array();
-				$ltopicUID = array();
-				$ltopicID = array();
-				$ltopicTopicName = array();
-				$ltopicDate = array();
+			
 				if(mysqli_num_rows($lastftopicresult) > 0){
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
-						$ltopicUsername[] = $row["username"];
-						$ltopicUID[] = $row["userID"];
-						$ltopicID[] = $row["ID"];
-						$ltopicTopicName[] = $row["content"];
-						$ltopicDate[] = $row["date"];
+						$topicid = $row["ID"];
+		//				echo "<a href='topic.php?varname=$topicid' class='list-group-item list-group-item-action'>Friend ".$row["username"]." Posted Topic ".$row["content"]."</a>";
 						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
 					}
 				}
@@ -248,15 +244,11 @@ function test_input($data) {
 
 			$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
 			$usertopicsresult = mysqli_query($conn, $usertopicsql);
-			$usertopicnames = array();
-			$usertopicids = array();
 
 			if(mysqli_num_rows($usertopicsresult) > 0){
 				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
-					$usertopicids[] = $row["ID"];
-					$usertopicnames[] = $row["content"];
-					echo "<a href='topic.php' class='list-group-item list-group-item-action'>".$row["content"]."</a>";
-				}
+					$topicid = $row["ID"];
+					echo "<a href='topic.php?varname=$topicid' class='list-group-item list-group-item-action'>".$row["content"]."</a>";				}
 			}
 			else
 				echo "<li class='list-group-item'> You Have Not Posted Any Topics";
@@ -272,14 +264,11 @@ function test_input($data) {
 
 			$favoritetopicsql = "SELECT * FROM Topic_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC";
 			$favoritetopicsresult = mysqli_query($conn, $favoritetopicsql);
-			$favoritetopicnames = array();
-			$favoritetopicids = array();
 
 			if(mysqli_num_rows($favoritetopicsresult) > 0){
 				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
-					$favoritetopicnames[] = $row["ID"];
-					$favoritetopicids[] = $row["content"];
-					echo "<a href='topic.php' class='list-group-item list-group-item-action'>".$row["content"]."</a>";
+					$topicid = $row["ID"];
+					echo "<a href='topic.php?varname=$topicid' class='list-group-item list-group-item-action'>".$row["content"]."</a>";
 				}
 			}
 			else
