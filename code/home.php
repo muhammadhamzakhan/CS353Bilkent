@@ -192,7 +192,7 @@ function test_input($data) {
 		</div>
 		
 	<div id="friendsactivity">
-		<h3>Your Friends' Activity Is As Following: </h3>
+		<h3>Your Friends' Activity:</h3>
 		<ul class="list-group">
 				<?php
 				$db = $conn;
@@ -214,7 +214,7 @@ function test_input($data) {
 						$lentryID[] = $row["ID"];
 						$lentryTopicID[] = $row["topicsID"];
 						$lentryTopicName[] = $row["topicName"];
-						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
+						echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php'>".$row["topicName"]."</a>"; 
 					}
 				}
 				else
@@ -226,8 +226,7 @@ function test_input($data) {
 				if(mysqli_num_rows($lastftopicresult) > 0){
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
 						$topicid = $row["ID"];
-		//				echo "<a href='topic.php?varname=$topicid' class='list-group-item list-group-item-action'>Friend ".$row["username"]." Posted Topic ".$row["content"]."</a>";
-						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$topicid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
 					}
 				}
 				else
