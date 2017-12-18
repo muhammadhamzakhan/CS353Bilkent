@@ -255,7 +255,7 @@ function test_input($data) {
 				while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) {
 					$usertopicids[] = $row["ID"];
 					$usertopicnames[] = $row["content"];
-					echo "<li class='list-group-item'>".$row["content"]."</li>";
+					echo "<a href='topic.php' class='list-group-item list-group-item-action'>".$row["content"]."</a>";
 				}
 			}
 			else

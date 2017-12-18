@@ -76,20 +76,10 @@
       </div>
 	  
 	  <div class="col-xs-6">
-	  	
-      </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
 	  	<form class="form-inline">
   			<input type="email" class="form-control mb-2 mr-sm-2 mb-sm-0" id="email" placeholder="New Email">
 			<button type="submit" class="btn btn-primary">Change Email</button>
 		</form>
-      </div>
-	  
-	  <div class="col-xs-6">
-	  	
       </div>
   	</div>
 	
@@ -102,20 +92,10 @@
       </div>
 	  
 	  <div class="col-xs-6">
-	  	
-      </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
 	  	<form class="form-inline">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="banuser" placeholder="Username">
 			<button type="submit" class="btn btn-primary">Ban User</button>
 		</form>
-      </div>
-	  
-	  <div class="col-xs-6">
-	  	
       </div>
   	</div>
 	
@@ -132,8 +112,53 @@
       </div>
   	</div>
 	
+	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<div id="blocklist">
+			<h3>Your Block List:</h3>
+			<ul class="list-group">
+			<?php 
+				
+			?>
+			</ul>
+		</div>	
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<div id="banlist">
+			<h3>System Ban List:</h3>
+			<ul class="list-group">
+			<?php 
+				
+			?>
+			</ul>
+		</div>
+      </div>
+  	</div>
 	
-	
+	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<div id="reports">
+			<h3>Reports:</h3>
+			<ul class="list-group">
+			<?php 
+				
+			?>
+			</ul>
+		</div>	
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<div id="following">
+			<h3>Following:</h3>
+			<ul class="list-group">
+			<?php 
+				
+			?>
+			</ul>
+		</div>
+      </div>
+  	</div>	
 	
 </div>
 <script src="js/jquery-1.11.3.min.js"></script>
