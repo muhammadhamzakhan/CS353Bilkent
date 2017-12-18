@@ -85,7 +85,7 @@ function test_input($data) {
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="#">Messages</a></li>
             <li><a href="#">Notifications</a></li>
-            <li><a href="#">Settings</a></li>
+            <li><a href="settingsadmin.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
             <li class="dropdown">
               <ul class="dropdown-menu">
@@ -280,5 +280,6 @@ function test_input($data) {
 		</ul>
 	</div>
   </div>
+		</div>
   </body>
 </html>
