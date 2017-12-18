@@ -1,6 +1,3 @@
-//user id has to be defined as userid before redirecting to settings page
-
-
 function change_password($newPassword){
   $sql = "UPDATE User SET password = '$newPassword' WHERE User.ID = 'GLOBALS['userid']'";
   $result = mysqli_query($sql, GLOBALS['conn']);
@@ -73,5 +70,87 @@ function unban_user($unbanned_name){
       $result = mysqli_query($sql, GLOBALS['conn']);
       if($result)
         echo 'alert("User unbanned")';
+  }
+}
+
+function delete_report($report_date){
+  $sql = "DELETE FROM Report WHERE '$report_date' = date";
+  $result = mysqli_query($sql, GLOBALS['conn']);
+  if($result){
+    echo 'alert("Report deleted")';
+  }
+}
+
+///Block List Populator
+$blockedNames = array();
+$sql = "SELECT username FROM UserBlock JOIN User ON (User.ID = UserBlock.blockedID) WHERE UserBlock.blockerID = '$_SESSION['userid']'";
+$result = mysqli_query($sql, $conn]);
+if($result){
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+      $blockedNames[] = row['username'];
+    }
+  }
+}
+
+///Banned List Populator
+$bannedNames = array();
+$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$_SESSION['userid']'";
+$result = mysqli_query($sql, $conn]);
+if($result){
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+      $bannedNames[] = row['username'];
+    }
+  }
+}
+
+///Report List Populator
+$reportDates = array();
+$reportMessages = array();
+$reporterID = array();
+$reporterNames = array();
+$reportMessages = array();
+$reportTypes = array();
+
+$sql = "SELECT * FROM Report JOIN User ON (User.ID = Report.userID)";
+$result = mysqli_query($sql, $conn]);
+if($result){
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+      $reportDates[] = row['date']; 
+      $reportMessages[] = row['message']; 
+      $reporterID[] = row['userID']; 
+      $reporterNames[] = row['username']; 
+      $reportMessages[] = row['message']; 
+      $reportTypes[] = row['reportType'];   
+    }
+  }
+}
+
+for($i = 0; $i < sizeof($reporterID); $i){
+  //a user got reported
+  if(reportTypes[$i] == 0){
+  //print
+  }
+  //a topic got reported
+  else if(reportTypes[$i] == 1){
+  //print
+  }
+  //an entry got reported
+  else{
+  //print
+  }
+}
+
+///Following List Populator
+$followedNames = array();
+$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$_SESSION['userid']'";
+$result = mysqli_query($sql, $conn]);
+if($result){
+  if(mysqli_num_rows($result) > 0){
+    while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+      $bannedNames[] = row['username'];
+    }
   }
 }
