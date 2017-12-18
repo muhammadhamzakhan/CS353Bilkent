@@ -1,0 +1,30 @@
+//user id has to be defined as userid before redirecting to settings page
+
+function change_password($newPassword){
+  $sql = "UPDATE User SET password = '$newPassword' WHERE User.ID = 'GLOBALS['userid']'";
+  $result = mysqli_query(GLOBALS['conn']);
+  echo 'alert("Password successfully changed")';
+  
+  if(mysqli_num_rows($searchentryresult) > 0){
+    while($row = mysqli_fetch_array($searchentryresult,MYSQLI_ASSOC)) {
+      $entryids[] = $row["ID"];
+      $entrycontents[] = $row["content"];
+      $entryownernames[] = $row["username"];
+      }
+  }  
+}
+
+function change_email($newEmail){
+  $sql = "UPDATE User SET email = '$newEmail' WHERE User.ID = 'GLOBALS['userid']'";
+  $result = mysqli_query(GLOBALS['conn']);
+  echo 'alert("Email successfully changed")';
+}
+
+function block_user($blocked_id){
+  $sql = "INSERT INTO UserBlock VALUES ('GLOBALS['userid']', '$blocked_id')";
+  $result = mysqli_query(GLOBALS['conn']);
+  if($result){
+    echo 'alert("User blocked")';
+  }
+}
+
