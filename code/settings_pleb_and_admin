@@ -1,5 +1,8 @@
 //user id has to be defined as userid before redirecting to settings page
 
+$connection = $conn;
+
+
 function change_password($newPassword){
   $sql = "UPDATE User SET password = '$newPassword' WHERE User.ID = 'GLOBALS['userid']'";
   $result = mysqli_query($sql, GLOBALS['conn']);
@@ -41,6 +44,10 @@ function ban_user($banned_name){
   }
 }
 
-function add_category($new_category_name){}
+function add_category($new_category_name){
+  $sql = "INSERT INTO Category VALUES ($new_category_name)";
+  $result = mysqli_query($sql, GLOBALS['connection']);
+  if()
+}
 function unblock_user($unblocked_name){}
 function unban_user($unbanned_name){}
