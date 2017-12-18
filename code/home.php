@@ -214,6 +214,8 @@ function test_input($data) {
 						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
 					}
 				}
+				else
+					echo "<li class='list-group-item'> Your Friends Have Not Made Any New Entries";
 
 				$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
 				$lastftopicresult = mysqli_query($db, $lastfentrysql);
@@ -232,6 +234,8 @@ function test_input($data) {
 						echo "<li class='list-group-item'>Friend ".$row["username"]." Posted Topic ".$row["content"]; 
 					}
 				}
+				else
+					echo "<li class='list-group-item'> Your Friends Have Not Posted Any New Topics";
 				?>
 		</ul>
 		</div>
@@ -254,6 +258,8 @@ function test_input($data) {
 					echo "<li class='list-group-item'>".$row["content"]."</li>";
 				}
 			}
+			else
+				echo "<li class='list-group-item'> You Have Not Posted Any Topics";
 
 			?>
 	</ul>
@@ -276,6 +282,8 @@ function test_input($data) {
 					echo "<li class='list-group-item'>".$row["content"]."</li>";
 				}
 			}
+			else
+				echo "<li class='list-group-item'> You Don't Have Any Favorite Topics";
 			?>
 		</ul>
 	</div>
