@@ -1,7 +1,5 @@
 //user id has to be defined as userid before redirecting to settings page
 
-$connection = $conn;
-
 
 function change_password($newPassword){
   $sql = "UPDATE User SET password = '$newPassword' WHERE User.ID = 'GLOBALS['userid']'";
@@ -12,19 +10,19 @@ function change_password($newPassword){
 
 function change_email($newEmail){
   $sql = "UPDATE User SET email = '$newEmail' WHERE User.ID = 'GLOBALS['userid']'";
-  $result = mysqli_query($sql, GLOBALS['connection']);
+  $result = mysqli_query($sql, GLOBALS['conn']);
   echo 'alert("Email successfully changed")';
 }
 
 function block_user($blocked_name){
   $sql = "SELECT ID FROM User WHERE username = '$blocked_name'";
-  $result = mysqli_query($sql, GLOBALS['connection']);
+  $result = mysqli_query($sql, GLOBALS['conn']);
   if($result){
     if(mysqli_num_rows($result) > 0){
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
       $blocked_id = $row[ID];
       $sql = "INSERT INTO UserBlock VALUES ('$_SESSION['userid']', '$blocked_id')";
-      $result = mysqli_query($sql, GLOBALS['connection']);
+      $result = mysqli_query($sql, GLOBALS['conn']);
       if($result)
         echo 'alert("User blocked")';
   }
@@ -32,13 +30,13 @@ function block_user($blocked_name){
 
 function ban_user($banned_name){ 
   $sql = "SELECT ID FROM User WHERE username = '$banned_name'";
-  $result = mysqli_query($sql, GLOBALS['connection']);
+  $result = mysqli_query($sql, GLOBALS['conn']);
   if($result){
     if(mysqli_num_rows($result) > 0){
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
       $banned_id = $row[ID];
       $sql = "INSERT INTO AdminBan VALUES ('$_SESSION['userid']', '$banned_id')";
-      $result = mysqli_query($sql, GLOBALS['connection']);
+      $result = mysqli_query($sql, GLOBALS['conn']);
       if($result)
         echo 'alert("User blocked")';
   }
@@ -46,7 +44,7 @@ function ban_user($banned_name){
 
 function add_category($new_category_name){
   $sql = "INSERT INTO Category VALUES ($new_category_name)";
-  $result = mysqli_query($sql, GLOBALS['connection']);
+  $result = mysqli_query($sql, GLOBALS['conn']);
   if()
 }
 function unblock_user($unblocked_name){}
