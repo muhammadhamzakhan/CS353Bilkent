@@ -1,0 +1,11 @@
+//receive other profiles id as $oid
+
+$sql = "SELECT username FROM User WHERE '$oid' = ID";
+$result = mysqli_query($sql, $conn);
+$otherName = mysqli_fetch_array($result,MYSQLI_ASSOC)['username'];
+//set name tag to othername
+
+
+//populate right side
+$topicNames = array();
+$topicID = array();
