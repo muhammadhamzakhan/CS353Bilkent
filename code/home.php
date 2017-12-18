@@ -279,7 +279,7 @@ function test_input($data) {
 				while($row = mysqli_fetch_array($favoritetopicsresult,MYSQLI_ASSOC)) {
 					$favoritetopicnames[] = $row["ID"];
 					$favoritetopicids[] = $row["content"];
-					echo "<li class='list-group-item'>".$row["content"]."</li>";
+					echo "<a href='topic.php' class='list-group-item list-group-item-action'>".$row["content"]."</a>";
 				}
 			}
 			else
