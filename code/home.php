@@ -214,7 +214,8 @@ function test_input($data) {
 						$lentryID[] = $row["ID"];
 						$lentryTopicID[] = $row["topicsID"];
 						$lentryTopicName[] = $row["topicName"];
-						echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php'>".$row["topicName"]."</a>"; 
+						$topicid = $row["topicsID"];
+						echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>"; 
 					}
 				}
 				else
