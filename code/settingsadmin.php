@@ -1,3 +1,116 @@
+<?php
+	include 'connect.php';
+	$uid = $_SESSION['userid'];
+	
+	//function to strip and test the input data
+	function test_input($data) 
+	{
+	  $data = trim($data);
+	  $data = stripslashes($data);
+	  $data = htmlspecialchars($data);
+	  return $data;
+	}
+
+	if (isset($_POST['changePasswordButton'])) 
+	{
+    	//change password action
+		$newPassword = test_input($_POST['changePassword']);
+		$sql = "UPDATE User SET password = '$newPassword' WHERE User.ID = '$uid'";
+		$result = mysqli_query($conn, $sql);
+  		echo "<script>alert('Password Successfully Changed')</script>";
+		header("Refresh:0");	
+	} 
+	else if (isset($_POST['blockUserButton'])) 
+	{
+    	//block user action
+		$blocked_name = test_input($_POST['blockUser']);
+		$sql = "SELECT ID FROM User WHERE username = '$blocked_name'";
+		$result = mysqli_query($conn, $sql);
+		if($result)
+		{			
+			if(mysqli_num_rows($result) > 0)
+			{
+				$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  	$blocked_id = $row['ID'];
+			  	$sql = "INSERT INTO UserBlock VALUES ('$uid', '$blocked_id')";
+			  	$result = mysqli_query($conn, $sql);
+			  	if($result)
+				{
+					echo "<script>alert('User Successfully Blocked')</script>";
+					header("Refresh:0");
+				}
+		  	}
+		}
+	} 
+	else if(isset($_POST['banUserButton']))
+	{
+		$banned_name = test_input($_POST['banUser']);
+		$sql = "SELECT ID FROM User WHERE username = '$banned_name'";
+		$result = mysqli_query($conn, $sql);
+		if($result)
+		{
+			if(mysqli_num_rows($result) > 0)
+			{
+				$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  	$banned_id = $row['ID'];
+			  	$sql = "INSERT INTO AdminBan VALUES ('$uid', '$banned_id')";
+			  	$result = mysqli_query($conn, $sql);
+			  	if($result)
+				{
+					echo "<script>alert('User Successfully Banned')</script>";
+					header("Refresh:0");
+				}
+		  	}
+		}				
+	}
+	else if(isset($_POST['changeEmailButton']))
+	{
+		$newEmail = $_POST['changeEmail'];
+		$sql = "UPDATE User SET email = '$newEmail' WHERE User.ID = '$uid'";
+		$result = mysqli_query($conn, $sql);
+		echo "<script>alert('Email Successfully Changed')</script>";
+		header("Refresh:0");
+	}
+	else if(isset($_POST['addCategoryButton']))
+	{
+		$new_category_name = $_POST['addCategory'];
+		$sql = "INSERT INTO Category VALUES ('$new_category_name')";
+	  	$result = mysqli_query($conn, $sql);
+	  	if($result)
+		{
+			echo "<script>alert('Category Successfully Added')</script>";
+			header("Refresh:0");
+	  	}
+	}
+	else if(isset($_POST['unblockUserButton']))
+	{
+		$unblocked_name = $_POST['unblockUser'];
+		$sql = "SELECT ID FROM User WHERE username = '$unblocked_name'";
+  		$result = mysqli_query($conn, $sql);
+  		if($result)
+		{
+    		if(mysqli_num_rows($result) > 0)
+			{
+			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  $unblocked_id = $row['ID'];
+			  $sql = "DELETE FROM UserBlock WHERE blockerID = '$uid' AND blockedID = '$unblocked_id')";
+			  $result = mysqli_query($conn, $sql);
+			  if($result)
+			  {
+				echo "<script>alert('User Successfully Unblocked')</script>";
+				header("Refresh:0");
+			  }
+			}			
+  		}
+	}
+	else
+	{
+		
+    //no button pressed
+
+	}
+?>
+
 <!doctype html>
 <html>
 <head>
@@ -69,46 +182,82 @@
 	
 	<div class="row">
 	  <div class="col-xs-6">
-	  	<form class="form-inline">
-  			<input type="password" class="form-control mb-2 mr-sm-2 mb-sm-0" id="password" placeholder="New Password">
-			<button type="submit" class="btn btn-primary">Change Password</button>
+	  	<form class="form-inline" method="post">
+  			<input type="password" class="form-control mb-2 mr-sm-2 mb-sm-0" id="password" placeholder="New Password" name="changePassword">
+			<button type="submit" class="btn btn-primary" name="changePasswordButton" >Change Password</button>
 		</form>
       </div>
 	  
 	  <div class="col-xs-6">
-	  	<form class="form-inline">
-  			<input type="email" class="form-control mb-2 mr-sm-2 mb-sm-0" id="email" placeholder="New Email">
-			<button type="submit" class="btn btn-primary">Change Email</button>
+	  	<form class="form-inline" method="post">
+  			<input type="email" class="form-control mb-2 mr-sm-2 mb-sm-0" id="email" placeholder="New Email" name="changeEmail">
+			<button type="submit" class="btn btn-primary" name="changeEmailButton">Change Email</button>
+		</form>
+      </div>
+		
+  	</div>
+	
+	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="blockuser" placeholder="Username" name="blockUser">
+			<button type="submit" class="btn btn-primary" name="blockUserButton">Block User</button>
+		</form>
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="banUser" placeholder="Username" name="banUser">
+			<button type="submit" class="btn btn-primary" name="banUserButton">Ban User</button>
 		</form>
       </div>
   	</div>
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-	  	<form class="form-inline">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="blockuser" placeholder="Username">
-			<button type="submit" class="btn btn-primary">Block User</button>
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unblockUser" placeholder="Username" name="unblockUser">
+			<button type="submit" class="btn btn-primary" name="unblockUserButton">Unblock User</button>
 		</form>
       </div>
 	  
 	  <div class="col-xs-6">
-	  	<form class="form-inline">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="banuser" placeholder="Username">
-			<button type="submit" class="btn btn-primary">Ban User</button>
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unbanuser" placeholder="Username" name="unbanUser">
+			<button type="submit" class="btn btn-primary" name="banUserButton">Unban User</button>
 		</form>
       </div>
   	</div>
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-	  	<form class="form-inline">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="addcategory" placeholder="Category Name">
-			<button type="submit" class="btn btn-primary">Add Category</button>
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="addcategory" placeholder="Category Name" name="addCategory">
+			<button type="submit" class="btn btn-primary" name="addCategoryButton">Add Category</button>
 		</form>
       </div>
 	  
 	  <div class="col-xs-6">
-	  	
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="removeCategory" placeholder="Category Name" name="removeCategory">
+			<button type="submit" class="btn btn-primary" name="removeCategoryButton">Remove Category</button>
+		</form>
+      </div>
+  	</div>
+	
+	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="removeReport" placeholder="Report ID" name="removeReport">
+			<button type="submit" class="btn btn-primary" name="removeReportButton">Remove Report</button>
+		</form>
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unfollow" placeholder="Username" name="unfollow">
+			<button type="submit" class="btn btn-primary" name="unfollowButton">Unfollow</button>
+		</form>
       </div>
   	</div>
 	
@@ -118,7 +267,19 @@
 			<h3>Your Block List:</h3>
 			<ul class="list-group">
 			<?php 
-				
+				$blockedNames = array();
+				$sql = "SELECT username FROM UserBlock JOIN User ON (User.ID = UserBlock.blockedID) WHERE UserBlock.blockerID = '$uid'";
+				$result = mysqli_query($conn, $sql);
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+						$blockedNames[] = $row['username'];
+						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
+					}
+				  }
+					else
+						echo "<li class='list-group-item'> You Don't Have Any Blocked Users";
+				}
 			?>
 			</ul>
 		</div>	
@@ -129,7 +290,19 @@
 			<h3>System Ban List:</h3>
 			<ul class="list-group">
 			<?php 
-				
+				$bannedNames = array();
+				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
+				$result = mysqli_query($conn, $sql);				
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+					  	$bannedNames[] = row['username'];
+						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
+					}
+				  }
+					else
+						echo "<li class='list-group-item'> No Users Have Been Banned From The Site";
+				}	
 			?>
 			</ul>
 		</div>
@@ -142,7 +315,46 @@
 			<h3>Reports:</h3>
 			<ul class="list-group">
 			<?php 
-				
+				$reportDates = array();
+				$reportMessages = array();
+				$reporterID = array();
+				$reporterNames = array();
+				$reportMessages = array();
+				$reportTypes = array();
+
+				$sql = "SELECT * FROM Report JOIN User ON (User.ID = Report.userID)";
+				$result = mysqli_query($conn, $sql);
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+					  $reportDates[] = row['date']; 
+					  $reportMessages[] = row['message']; 
+					  $reporterID[] = row['userID']; 
+					  $reporterNames[] = row['username']; 
+					  $reportMessages[] = row['message']; 
+					  $reportTypes[] = row['reportType'];   
+					}
+				  }
+				}
+
+				for($i = 0; $i < sizeof($reporterID); $i){
+				  //a user got reported
+				  if(reportTypes[$i] == 0){
+				  //print
+					  echo "<li class='list-group-item'>User <a href='user.php?varname=$topicid'>".$row["username"]."</a> Got Reported By User <a href='user.php?varname=$topicid'>".$row["username"]."</a>"; 
+				  }
+				  //a topic got reported
+				  else if(reportTypes[$i] == 1){
+				  //print
+					  echo "<li class='list-group-item'>Friend <a href='user.php?varname=$topicid'>".$row["username"]."</a> Reported Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
+				  }
+				  //an entry got reported
+				  else{
+				  //print
+					  echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Reported Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>";
+				  }
+					// no reports logic?
+				}	
 			?>
 			</ul>
 		</div>	
@@ -153,7 +365,19 @@
 			<h3>Following:</h3>
 			<ul class="list-group">
 			<?php 
-				
+				$followedNames = array();
+				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
+				$result = mysqli_query($conn, $sql);
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
+					  	$bannedNames[] = row['username'];
+						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
+					}
+				  }
+					else
+						echo "<li class='list-group-item'> You Are Not Following Anyone";
+				}
 			?>
 			</ul>
 		</div>
