@@ -1,29 +1,29 @@
 <?php
-include 'connect.php';
-$userID = $_SESSION['userid'];
-$category = "";
-$connected = FALSE;
-if($username != "" or $email != ""){
-	$connected = TRUE;
-}
-$comment = "";
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	if (empty($_POST["comment"])) {
-		$comment = "";
-	} else {
-		$comment = test_input($_POST["comment"]);
+	include 'connect.php';
+	$userID = $_SESSION['userid'];
+	$category = "";
+	$connected = FALSE;
+	if($username != "" or $email != ""){
+		$connected = TRUE;
 	}
-	$category = test_input($_POST["Category"]);
-	$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
-	$conn->query($sql);
-}
+	$comment = "";
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		if (empty($_POST["comment"])) {
+			$comment = "";
+		} else {
+			$comment = test_input($_POST["comment"]);
+		}
+		$category = test_input($_POST["Category"]);
+		$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
+		$conn->query($sql);
+	}
 
-function test_input($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-}
+	function test_input($data) {
+		$data = trim($data);
+		$data = stripslashes($data);
+		$data = htmlspecialchars($data);
+		return $data;
+	}
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +83,7 @@ function test_input($data) {
           </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
-            <li><a href="#">Messages</a></li>
+            <li><a href="messages.php">Messages</a></li>
             <li><a href="#">Notifications</a></li>
             <li><a href="settingsadmin.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
