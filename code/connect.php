@@ -1,9 +1,9 @@
 <!-- Connection File -->
 <?php	
 	$servername = "localhost";
-	$username = "mamed";
+	$username = "root";
 	$pass = "";
-	$db = "servo";
+	$db = "Servo";
 	session_start();
 	$conn = new mysqli($servername, $username, $pass, $db);
 	date_default_timezone_set('Europe/Istanbul');

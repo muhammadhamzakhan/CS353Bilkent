@@ -64,7 +64,8 @@
 						$rec_id = $row["ID"];
 						$rec_name = $row["username"];
 						//print the list of users that are not blocked
-						if(!is_blocked($userID, $rec_id, $conn) and ($rec_id != $userID) and !empty($rec_name){
+						if(!is_blocked($userID, $rec_id, $conn) and ($rec_id != $userID) and !empty($rec_name))
+						{
 							echo "<li onclick=\"window.location.href='messages.php?recipient=$rec_name'\" >".$rec_name."</li>";
 						}
 					}
