@@ -382,7 +382,57 @@
 			</ul>
 		</div>
       </div>
-  	</div>	
+  	</div>
+  	
+  	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<h3>User Stats:</h3>
+	  	<table class="table table-bordered">
+		  <thead>
+			<tr>
+			  <th scope="col">#</th>
+			  <th scope="col">Username</th>
+			  <th scope="col">No Of Topics</th>
+			  <th scope="col">No Of Entries</th>
+			</tr>
+		  </thead>
+		  <tbody>
+		  	<?php
+			  
+			?>
+			<tr>
+			  <th scope="row">1</th>
+			  <td>Mark</td>
+			  <td>5</td>
+			  <td>10</td>
+			</tr>			
+		  </tbody>
+		</table>			
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<h3>Topic Stats:</h3>
+	  	<table class="table table-bordered">
+		  <thead>
+			<tr>
+			  <th scope="col">#</th>
+			  <th scope="col">Topic Name</th>
+			  <th scope="col">No Of Entries</th>
+			</tr>
+		  </thead>
+		  <tbody>
+		  	<?php
+			  
+			?>
+			<tr>
+			  <th scope="row">1</th>
+			  <td>Cars</td>
+			  <td>5</td>
+			</tr>			
+		  </tbody>
+		</table>		
+      </div>
+  	</div>		
 	
 </div>
 <script src="js/jquery-1.11.3.min.js"></script>
