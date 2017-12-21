@@ -91,7 +91,7 @@
 					<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
 				</div>
 			</div>
-      	</div>
+		</div>
 	  	<br>
 		
 		<div class="row">

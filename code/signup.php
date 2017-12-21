@@ -94,7 +94,7 @@
 				<div class="row" style="margin-top:20px;">
 					<div class="form-group">	   
 						<div class="col-sm-3 col-sm-offset-1">
-							<label for="username" >Username:</label>
+							<label for="username" >Username:</label>							
 							<input type="text" name="username" id="username">
 						</div>
 					</div>
@@ -103,7 +103,7 @@
 				<div class="row" style="margin-top:20px;">
 					<div class="form-group">	   
 						<div class="col-sm-3 col-sm-offset-1">
-							<label for="email">Email:</label>
+							<label for="email">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email:</label>
 							<input type="email" name="email" id="email">
 						</div>
 					</div>
