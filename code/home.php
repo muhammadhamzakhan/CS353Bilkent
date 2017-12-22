@@ -171,7 +171,7 @@
 		<ul class="list-group">
 				<?php
 				$db = $conn;
-				$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE ID in (SELECT Favorite.contentID FROM Favorite WHERE userID = '$userID' && isInstanceTopic = 1) ORDER BY date DESC ";
+				$lastfentrysql = "SELECT * FROM entry_combined_view WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
 				$lastfentryresult = mysqli_query($db, $lastfentrysql);
 				$lentryUsername = array();
 				$lentryUID = array();
@@ -190,7 +190,8 @@
 						$lentryTopicID[] = $row["topicsID"];
 						$lentryTopicName[] = $row["topicName"];
 						$topicid = $row["topicsID"];
-						echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>"; 
+						$friendid =$row["userID"];
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>"; 
 					}
 				}
 				else
@@ -203,7 +204,7 @@
 				{
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
 						$topicid = $row["ID"];
-						$friendid = 1;
+						$friendid =$row["userID"];
 						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
 					}
 				}
