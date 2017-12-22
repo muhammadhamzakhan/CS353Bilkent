@@ -1,6 +1,7 @@
 <?php
 	include 'connect.php';
 	$userID = $_SESSION['userid'];
+	$friendID = 1;
 
 ?>
 
@@ -55,19 +56,69 @@
       </div>
       <!-- /.container-fluid -->
     </nav>
-    
-    <div class="row">
-  		<div class="col-sm-5" id="leftcolumn">		  
-    		
-		</div>		
 		
 	  	<div class="col-sm-5" id = "middlecolumn">
-		
+	  	
+	  		<div class="row" style="margin-top:20px;">
+				<?php
+				// Print Username
+				
+				?>
+			</div>
+  		
+	  		<div class="row" style="margin-top:20px;">
+				<form class="form-inline col-md-5 col-md-offset-4" method="post">
+					<button type="submit" class="btn btn-primary" name="blockUserButton">Block User</button>
+				</form>
+			</div>
+			
+			<div class="row" style="margin-top:20px;">
+				<form class="form-inline col-md-6 col-md-offset-4" method="post">
+					<button type="submit" class="btn btn-primary" name="messageUserButton">Message User</button>
+				</form>
+			</div>
+			
+			<div class="row" style="margin-top:20px;">
+				<form class="form-inline col-md-7 col-md-offset-4" method="post">
+					<button type="submit" class="btn btn-primary" name="followUserButton">Follow User</button>
+				</form>
+			</div>
+			
+			<div class="row" style="margin-top:20px;">
+				<form class="form-inline col-md-5 col-md-offset-4" method="post">
+					<button type="submit" class="btn btn-primary" name="unfollowUserButton">Unfollow User</button>
+				</form>
+			</div>
+			
+			<div class="row" style="margin-top:20px;">
+				<form class="form-inline col-md-5 col-md-offset-4" method="post">
+					<button type="submit" class="btn btn-primary" name="reportUserButton">Report User</button>
+				</form>
+			</div>
 		</div>
      	
       	<div class="col-sm-5" id="rightcolumn">
-      
-		</div>
-	</div>
+			<h3>Friend's Topics:</h3>
+			<ul class="list-group">
+				<?php 
+
+				$userID = $friendID; 
+				$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
+				$usertopicsresult = mysqli_query($conn, $usertopicsql);
+
+				if(mysqli_num_rows($usertopicsresult) > 0)
+				{
+					while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) 
+					{
+						$topicid = $row["ID"];
+						echo "<a href='topic.php?varname=$topicid' class='list-group-item list-group-item-action'>".$row["content"]."</a>";				
+					}
+				}
+				else
+					echo "<li class='list-group-item'> Your Friend Have Not Posted Any Topics";
+
+				?>
+			</ul>
+		</div>		
   </body>
 </html>
