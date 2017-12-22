@@ -197,12 +197,14 @@
 					echo "<li class='list-group-item'> Your Friends Have Not Made Any New Entries";
 
 				$lastftopicsql = "SELECT * FROM Topic_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
-				$lastftopicresult = mysqli_query($db, $lastfentrysql);
+				$lastftopicresult = mysqli_query($db, $lastftopicsql);
 			
-				if(mysqli_num_rows($lastftopicresult) > 0){
+				if(mysqli_num_rows($lastftopicresult) > 0)
+				{
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
 						$topicid = $row["ID"];
-						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$topicid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
+						$friendid = 1;
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
 					}
 				}
 				else
