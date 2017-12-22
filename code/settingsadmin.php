@@ -373,14 +373,44 @@
 		  </thead>
 		  <tbody>
 		  	<?php
-			  
-			?>
-			<tr>
-			  <th scope="row">1</th>
-			  <td>Mark</td>
-			  <td>5</td>
-			  <td>10</td>
-			</tr>			
+			  $sql = "SELECT username, COUNT(ID) as EntryNum FROM Entry_Combined_View GROUP BY username ORDER BY EntryNum DESC";
+				$result = mysqli_query($conn, $sql);
+
+				$sql1 = "SELECT username, COUNT(ID) as TopicNum FROM Topic_Combined_View GROUP BY username ORDER BY TopicNum DESC";
+				$result1 = mysqli_query($conn, $sql1);
+				$usernameArr = array();
+				$entryCountArr = array();
+				$topicCountArr = array();
+
+				while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+				  $usernameArr[] = $row["username"];
+				  $entryCountArr[] = $row["EntryNum"];
+				}
+
+				while($row = mysqli_fetch_array($result1,MYSQLI_ASSOC)) {
+				  $key = array_search($row["username"], $usernameArr);
+					if($row["TopicNum"] != "")	
+				  		$topicCountArr[$key] = $row["TopicNum"];
+					else
+						$topicCountArr[$key] = 0;
+				}
+
+				for($i = 0; $i < sizeof($usernameArr); $i++)
+				{					
+					echo "<tr>";
+					echo "<th scope='row'>".($i+1)."</th>";
+				  //username is $usernameArr[$i]
+					echo "<td>".$usernameArr[$i]."</td>";					
+				  //topic count is $topicCount[$i]
+					if($topicCountArr[$i])
+						echo "<td>".$topicCountArr[$i]."</td>";
+					else
+						echo "<td>0</td>";
+					 //entry count is $entryCount[$i]
+					echo "<td>".$entryCountArr[$i]."</td>";
+					echo "</tr>";
+				}
+			?>	
 		  </tbody>
 		</table>			
       </div>
