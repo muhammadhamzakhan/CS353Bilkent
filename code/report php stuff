@@ -1,7 +1,7 @@
-$sql = "SELECT username, COUNT(ID) as EntryNum FROM Entry_Combined_View GROUP BY username ORDER BY EntryNum";
+$sql = "SELECT username, COUNT(ID) as EntryNum FROM Entry_Combined_View GROUP BY username ORDER BY EntryNum DESC";
 $result = mysqli_query($conn, $sql);
 
-$sql1 = "SELECT username, COUNT(ID) as TopicNum FROM Topic_Combined_View GROUP BY username ORDER BY TopicNum";
+$sql1 = "SELECT username, COUNT(ID) as TopicNum FROM Topic_Combined_View GROUP BY username ORDER BY TopicNum DESC";
 $result1 = mysqli_query($conn, $sql1);
 $usernameArr = array();
 $entryCountArr = array();
@@ -24,28 +24,12 @@ for($i = 0; i < sizeof($usernameArr); $i++){
 }
 
 
-$sql = "SELECT username, COUNT(ID) as EntryNum FROM Entry_Combined_View GROUP BY username ORDER BY EntryNum";
+$sql = "SELECT topicName, COUNT(ID) as EntryNum FROM Topic_Combined_View GROUP BY topicName ORDER BY EntryNum DESC";
 $result = mysqli_query($conn, $sql);
 
-$sql1 = "SELECT username, COUNT(ID) as TopicNum FROM Topic_Combined_View GROUP BY username ORDER BY TopicNum";
-$result1 = mysqli_query($conn, $sql1);
-$usernameArr = array();
-$entryCountArr = array();
-$topicCountArr = array();
-
 while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-  $usernameArr[] = $row["username"];
-  $entryCountArr[] = $row["EntryNum"];
+  // $row["topicName"] - topic name
+  // $row["EntryNum"] - entry count
 }
 
-while($row = mysqli_fetch_array($result1,MYSQLI_ASSOC)) {
-  $key = array_search($row["username"], $usernameArr); 
-  topicCountArr[$key] = row["TopicNum"];
-}
-
-for($i = 0; i < sizeof($usernameArr); $i++){
-  //username is $usernameArr[$i]
-  //entry count is $entryCount[$i]
-  //topic count is $topicCount[$i]
-}
 
