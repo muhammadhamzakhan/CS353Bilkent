@@ -1,10 +1,17 @@
   <?php
   include 'connect.php';
   $comment = "";
+  $entryID = "";
   //$topicsID = $_GET['topicsID'];
-  $topicsID = 11;
-  $userID = 1;
-  $entryID = 6;
+  if(isset($_GET["varname"])){
+    $topicsID = $_GET["varname"];
+    $_SESSION['topicsID'] = $topicsID;
+  }
+  else {
+    $topicsID = $_SESSION['topicsID'];
+  }
+
+  $userID = $_SESSION['userid'];
   $username = "";
   function test_input($data) {
     $data = trim($data);
@@ -27,61 +34,101 @@
       if($rows['userID'] == $userID){ 
         ?>
 
-          <form action = "#">
-            <input type="checkbox" name="chkbox" id = "chk" onclick="showHide()"/>
-            <label for = "chk">Expand</label>
+          <form action = "topic.php" method="POST">
+            <input type="checkbox" name="chkbox" id = "chk0" onclick="showHide()"/>
+            <label for = "chk0">Expand</label>
             <br />
-            <label class="hidden">Enter your text here</label><input type="text" name="editArea" class = "hidden"/>
-            <input type="submit" name="expand" value="Expand" class = "hidden"> 
+            <label class="hidden0">Edit your Topic here</label><input type="text" name="editTopic" class = "hidden0"/>
+            <input type="submit" name="expandTopic" value="Expand" class = "hidden0"> 
           </form>
         <?php
 
+      }
+      else{
+        ?>
+          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite(<?php echo $topicsID;?>)"><label for = "setfavour">Add to Favourites</label>
+          <button></button>
+        <?php
       }
     }
   }
   echo "<br>";
 
   //fetch the entries
-  $sql = "SELECT content, userID, username FROM Entry_Combined_View WHERE topicsID = '$topicsID'";
+  $sql = "SELECT content, userID, username, ID FROM Entry_Combined_View WHERE topicsID = '$topicsID'";
   $result = $conn->query($sql);
   if($result){
     while($rows = $result->fetch_assoc()){
       echo $rows['username'].": ".$rows['content'];
-      if($rows['userID'] == $userID){ ?>
-
-        <form action = "#">
-          <input type="checkbox" name="chkbox" id = "chk" onclick="showHide()"/>
-          <label for = "chk">Expand</label>
+      if($rows['userID'] == $userID){ 
+        ?>
+        <style>
+          .hidden<?php echo $rows['ID'];?>{
+            display: none;  
+          }
+          .unhidden<?php echo $rows['ID'];?>{
+            display: none;
+          }
+        </style>
+        <form action = "topic.php" method = "POST">
+          <input type="checkbox" name="chkboxentry" id =<?php echo "\"".$rows['ID']."\"";?> onclick="showHideEntry(<?php echo $rows['ID'];?>)"/>
+         <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
+          <label for = <?php echo "\"".$rows['ID']."\"";?>>Expand</label>
           <br />
-          <label class="hidden">Enter your text here</label><input type="text" name="editArea" class = "hidden"/>
-          <input type="submit" name="expand" value="Expand" class = "hidden"> 
+          <label class=<?php echo "\"unhidden".$rows['ID']."\"";?>></label><input type="text" 
+          name="editEntry" class=<?php echo "\"unhidden".$rows['ID']."\"";?>/>
+          <input type="submit" name="expandEntry" value="Expand" class=<?php echo "\"unhidden".$rows['ID']."\"";?>> 
         </form>
-<?php
-      }    
+        <?php
+      } 
+      else{
+        ?>
+          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite()"><label for = "setfavour">Add to Favourites</label>
+          <button>Report</button>
+        <?php
+      } 
       echo "<br>";
     }
   }
 
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     if (empty($_POST["comment"])) {
       $comment = "";
     } 
     else {
       $comment = test_input($_POST["comment"]);
-    }
-    $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
-    $conn->query($sql);
-  }
+      $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
+      $conn->query($sql);
+      header("Refresh:0");
 
-  //expanding an entry
-  function expandEntry(){
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-      $editedEntry = test_input($_POST["editArea"]);
+    }
+   
+  }
+  if (isset($_POST["editTopic"]) && !empty($_POST["editTopic"])){
+      $editedTopic = test_input($_POST["editTopic"]);
+      $sql = "UPDATE Topic SET content = '$editedTopic' WHERE ID = '$topicsID'";
+      $conn->query($sql);
+      header("Refresh:0");
+    }
+  if (isset($_POST["editEntry"]) && !empty($_POST["editEntry"])){
+       if (isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+          $entryID = test_input($_POST["entryID"]);
+       }   
+      $editedEntry = test_input($_POST["editEntry"]);
       $sql = "UPDATE Entry SET content = '$editedEntry' WHERE ID = '$entryID'";
       $conn->query($sql);
-    }
-  } 
+      header("Refresh:0");
+    }  
+    // }
+
+  // }
+  // function expandTopic(){
+  //   if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+  //   }
+  // } 
   ?> 
 
 
@@ -91,35 +138,54 @@
   	<title>Servo | Topic</title>
   </head>
   <body>
-      <!-- JAVA SCRIPT to show or hide the Expand checkbox -->
+      <!-- JAVA SCRIPT to show or hide the Expand edit box -->
   	 <script type="text/javascript">
+         
      		function showHide(){
-     			var checkbox = document.getElementById("chk");
-     			var hiddeninputs = document.getElementsByClassName("hidden");
+     			var checkbox = document.getElementById("chk0");
+     			var hiddeninputs = document.getElementsByClassName("hidden0");
      			
      			for (var i = 0; 1 != hiddeninputs.length; i++) {
-     				if(checkbox.checked){
+     				//try{
+            if(checkbox.checked){
      					hiddeninputs[i].style.display = "block";
      				}
      				else{
               hiddeninputs[i].style.display = "none";
-     				}
+     				}//}catch(err){}
      			}
      		}
+        function showHideEntry(id){
+          var checkbox = document.getElementById(""+id);
+          var hiddeninputs = document.getElementsByClassName("unhidden"+id);
+          
+          for (var i = 0; 1 != hiddeninputs.length; i++) {
+            //try{            
+              if(checkbox.checked){
+              hiddeninputs[i].style.display = "block";
+            }
+            else{
+              hiddeninputs[i].style.display = "none";
+            }//}catch(err){}
+          }
+        }
   	</script>
-  <style> 
-  	.hidden{
-  		display: none;	
-  	}
-  </style>
 
+    <style>
+          .hidden0{
+            display: none;  
+          }
+          .unhidden0{
+            display: none;
+          }
+    </style>
 
   	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
    		Comment: <textarea name="comment" rows="5" cols="40"></textarea>
     		<input type="submit" name="submit" value="Submit">  
    	</form>
-   	
-   
-  </form>
+   	<a href="logout.php">Logout</a>
+    <a href="home.php">Home</a>
+
   </body>
   </html>
