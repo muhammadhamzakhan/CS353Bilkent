@@ -2,6 +2,7 @@
 	include 'connect.php';
 	$userID = $_SESSION['userid'];
 	$rec_id = "";
+	$to = "";
 
 	//Check if user is logged in, if not go to home
 	if($userID == ""){
@@ -76,7 +77,9 @@
 		<!-- Show the messages -->
 		<div>
 			<?php
-				$to = ($_GET["recipient"]);
+				if(isset($_GET['recipient']) && !empty($_GET['recipient'])){
+				$to = ($_GET['recipient']);
+				}
 
 				if($to != ""){
 
