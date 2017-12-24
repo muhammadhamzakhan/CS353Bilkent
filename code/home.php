@@ -12,10 +12,20 @@
 			$comment = "";
 		} else {
 			$comment = test_input($_POST["comment"]);
-			$category = test_input($_POST["Category"]);
+		}
+		$category = test_input($_POST["Category"]);
+
+		//if category is empty alert the user
+		if(empty($_POST["Category"])){
+			echo "<script>alert('Please select a category for the topic.')</script>";
+		}
+		//else create the topic in the database
+		else{
 			$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
 			$conn->query($sql);
 		}
+
+		
 	}
 
 	function test_input($data) {
