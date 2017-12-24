@@ -211,7 +211,7 @@ $userID = $_SESSION['userid'];
   if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
     $entryID = test_input($_POST["entryID"]);    
     $up = 1;
-    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    $sql = "INSERT INTO rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
     $conn->query($sql);
     header("Refresh:0");
   }
@@ -219,18 +219,17 @@ $userID = $_SESSION['userid'];
   if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
     $entryID = test_input($_POST["entryID"]);    
     $down = -1;
-    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
+    $sql = "INSERT INTO rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
     $conn->query($sql);
     header("Refresh:0");
   }
   //reporting
-  // if(isset($_POST['report']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-  //   $entryID = test_input($_POST["entryID"]);    
-  //   $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
-  //   $conn->query($sql);
-  //   header("Refresh:0");
-  // }
-
+  if(isset($_POST['report']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    $conn->query($sql);
+    //header("Refresh:0");
+  }
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -273,22 +272,22 @@ $userID = $_SESSION['userid'];
   </head>
   <body>
       <!-- JAVA SCRIPT to show or hide the Expand edit box -->
-     <script type="text/javascript">
+  	 <script type="text/javascript">
          
-        function showHide(){
-          var checkbox = document.getElementById("chk0");
-          var hiddeninputs = document.getElementsByClassName("hidden0");
-          
-          for (var i = 0; i != hiddeninputs.length; i++) {
-            //try{
+     		function showHide(){
+     			var checkbox = document.getElementById("chk0");
+     			var hiddeninputs = document.getElementsByClassName("hidden0");
+     			
+     			for (var i = 0; i != hiddeninputs.length; i++) {
+     				//try{
             if(checkbox.checked){
-              hiddeninputs[i].style.display = "block";
-            }
-            else{
+     					hiddeninputs[i].style.display = "block";
+     				}
+     				else{
               hiddeninputs[i].style.display = "none";
-            }//}catch(err){}
-          }
-        }
+     				}//}catch(err){}
+     			}
+     		}
         function showHideEntry(id){
           var checkbox = document.getElementById(""+id);
           var hiddeninputs = document.getElementsByClassName("unhidden"+id);
@@ -304,7 +303,7 @@ $userID = $_SESSION['userid'];
           }
         }
         
-    </script>
+  	</script>
 
     <style>
           .hidden0{
@@ -315,10 +314,12 @@ $userID = $_SESSION['userid'];
           }
     </style>
 
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-      Comment: <textarea name="comment" rows="5" cols="40"></textarea>
-        <input type="submit" name="submitEntry" value="Submit">  
-    </form>
+  	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+   		Comment: <textarea name="comment" rows="5" cols="40"></textarea>
+    		<input type="submit" name="submit" value="Submit">  
+   	</form>
+   	<a href="logout.php">Logout</a>
+    <a href="home.php">Home</a>
 
   </body>
   </html>
