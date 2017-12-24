@@ -22,8 +22,23 @@
 			echo "<script>alert('User Successfully Blocked')</script>";
 			header("Refresh:0");
 		}		  	
-	} 
-	
+	}
+	else if(isset($_POST['unfollowUserButton']))
+	{
+		  $unfollowed_id = $_GET["varname"];
+		  $sql = "DELETE FROM UserFollow WHERE followerID = '$uid' AND followedID = '$unfollowed_id'";
+		  $result = mysqli_query($conn, $sql);
+		  if($result)
+		  {
+			echo "<script>alert('User Successfully Unfollowed')</script>";
+			header("Refresh:0");
+		  }	  		
+	}	
+	else if(isset($_POST['followUserButton']))
+	{
+		  $followed_id = $_GET["varname"];
+		
+	}
 	else
 	{
 		
