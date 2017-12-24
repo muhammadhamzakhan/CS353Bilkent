@@ -21,11 +21,10 @@
 	  	$name = test_input($_POST['username']);
 	  	$password = test_input($_POST['password']);
 	 	
-	 	//if the name and password is blank, destroy session and log in to the home page with no user data
+	 	//if the name and password is blank, ask the user to login if he wants to continue
 	 	if($name == "" && $password == ""){
-			session_unset(); 
-			session_destroy();
-			header("Location:home.php");
+			echo "<script>alert('Please login')</script>";
+    		header("Refresh:0");
 			exit;
 		}
 		//Else if only one of the fields were left empty, warn the user!
@@ -91,7 +90,7 @@
 					<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
 				</div>
 			</div>
-		</div>
+      	</div>
 	  	<br>
 		
 		<div class="row">
@@ -108,7 +107,7 @@
 		
 		<div class="row">
 			<div class="col-sm-4 col-sm-offset-0">
-				<label>Or Explore Servo Without An Account:</label>
+				<label>GO</label>
 			</div>
 			<div class="col-sm-4">
       			<button type="submit" class="btn btn-primary">Lets Go!</button>
