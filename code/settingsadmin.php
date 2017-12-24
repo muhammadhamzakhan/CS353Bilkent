@@ -308,21 +308,22 @@
 		</div>	
       </div>
 	  
-	  <div class="col-xs-6">
+<div class="col-xs-6">
 	  	<div id="following">
 			<h3>Following:</h3>
 			<ul class="list-group">
 			<?php 
-				$followedNames = array();
-				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
+				$followedIDs = array();
+				$sql = "SELECT username FROM UserFollow JOIN User ON (UserFollow.followedID = User.ID)  WHERE followerID = '$uid'";
 				$result = mysqli_query($conn, $sql);
 				if($result){
 				  if(mysqli_num_rows($result) > 0){
 					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-					  	$bannedNames[] = $row['username'];
+					  	$followedIDs [] = $row['username'];
 						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
 					}
 				  }
+
 					else
 						echo "<li class='list-group-item'> You Are Not Following Anyone";
 				}
