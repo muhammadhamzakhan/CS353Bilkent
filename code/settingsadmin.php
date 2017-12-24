@@ -186,6 +186,11 @@
 		}
 		$sql = "DELETE FROM Category WHERE name = '$category_name'";
 		$result = mysqli_query($conn, $sql);
+		if($result)
+		{
+			echo "<script>alert('Category Removed')</script>";
+			header("Refresh:0");
+		}
 	}
 	else
 	{
