@@ -2,7 +2,6 @@
   include 'connect.php';
   $comment = "";
   $entryID = "";
-  //$topicsID = $_GET['topicsID'];
   if(isset($_GET["varname"])){
     $topicsID = $_GET["varname"];
     $_SESSION['topicsID'] = $topicsID;
@@ -47,7 +46,7 @@
       else{
         ?>
           <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite(<?php echo $topicsID;?>)"><label for = "setfavour">Add to Favourites</label>
-          <button></button>
+          <button>Report</button>
         <?php
       }
     }
@@ -71,7 +70,7 @@
           }
         </style>
         <form action = "topic.php" method = "POST">
-          <input type="checkbox" name="chkboxentry" id =<?php echo "\"".$rows['ID']."\"";?> onclick="showHideEntry(<?php echo $rows['ID'];?>)"/>
+          <input type="checkbox" name="chkboxentry" id =<?php echo "\"".$rows['ID']."\"";?> onclick="showHideEntry(<?php echo $rows['ID'];?>)">
          <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
           <label for = <?php echo "\"".$rows['ID']."\"";?>>Expand</label>
           <br />
@@ -83,14 +82,41 @@
       } 
       else{
         ?>
-          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite()"><label for = "setfavour">Add to Favourites</label>
-          <button>Report</button>
+          <form>
+            <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
+
+            <input type="submit" value = "+1" name="ratingUp" id = "rateUp" >
+            <input type="submit" value = "-1" name="ratingDown" >
+            <input type="submit" value = "Report" name="report">
+          </form>
         <?php
       } 
       echo "<br>";
     }
   }
-
+  //rating up
+  if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $up = 1;
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    $conn->query($sql);
+    //header("Refresh:0");
+  }
+  //rating down
+  if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $down = -1;
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
+    $conn->query($sql);
+    //header("Refresh:0");
+  }
+  //reporting
+  if(isset($_POST['report']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    $conn->query($sql);
+    //header("Refresh:0");
+  }
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -101,17 +127,19 @@
       $comment = test_input($_POST["comment"]);
       $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
       $conn->query($sql);
-      header("Refresh:0");
+      //header("Refresh:0");
 
     }
    
   }
+  //edit a topic
   if (isset($_POST["editTopic"]) && !empty($_POST["editTopic"])){
       $editedTopic = test_input($_POST["editTopic"]);
       $sql = "UPDATE Topic SET content = '$editedTopic' WHERE ID = '$topicsID'";
       $conn->query($sql);
-      header("Refresh:0");
-    }
+      //header("Refresh:0");
+  }
+  //edit an entry
   if (isset($_POST["editEntry"]) && !empty($_POST["editEntry"])){
        if (isset($_POST["entryID"]) && !empty($_POST["entryID"])){
           $entryID = test_input($_POST["entryID"]);
@@ -119,18 +147,10 @@
       $editedEntry = test_input($_POST["editEntry"]);
       $sql = "UPDATE Entry SET content = '$editedEntry' WHERE ID = '$entryID'";
       $conn->query($sql);
-      header("Refresh:0");
-    }  
-    // }
-
-  // }
-  // function expandTopic(){
-  //   if($_SERVER["REQUEST_METHOD"] == "POST"){
-
-  //   }
-  // } 
+      //header("Refresh:0");
+  }  
+ 
   ?> 
-
 
   <!DOCTYPE html>
   <html>
@@ -145,7 +165,7 @@
      			var checkbox = document.getElementById("chk0");
      			var hiddeninputs = document.getElementsByClassName("hidden0");
      			
-     			for (var i = 0; 1 != hiddeninputs.length; i++) {
+     			for (var i = 0; i != hiddeninputs.length; i++) {
      				//try{
             if(checkbox.checked){
      					hiddeninputs[i].style.display = "block";
@@ -159,7 +179,7 @@
           var checkbox = document.getElementById(""+id);
           var hiddeninputs = document.getElementsByClassName("unhidden"+id);
           
-          for (var i = 0; 1 != hiddeninputs.length; i++) {
+          for (var i = 0; i != hiddeninputs.length; i++) {
             //try{            
               if(checkbox.checked){
               hiddeninputs[i].style.display = "block";
@@ -169,6 +189,7 @@
             }//}catch(err){}
           }
         }
+        
   	</script>
 
     <style>
