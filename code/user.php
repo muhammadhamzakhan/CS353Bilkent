@@ -1,8 +1,35 @@
 <?php
 	include 'connect.php';
-	$userID = $_SESSION['userid'];
-	$friendID = 1;
+	$uid = $_SESSION['userid'];
+	
+	//function to strip and test the input data
+	function test_input($data) 
+	{
+	  $data = trim($data);
+	  $data = stripslashes($data);
+	  $data = htmlspecialchars($data);
+	  return $data;
+	}
 
+	if (isset($_POST['blockUserButton'])) 
+	{
+    	//block user action
+		$blocked_id = $_GET["varname"];
+		$sql = "INSERT INTO UserBlock VALUES ('$uid', '$blocked_id')";
+		$result = mysqli_query($conn, $sql);
+		if($result)
+		{
+			echo "<script>alert('User Successfully Blocked')</script>";
+			header("Refresh:0");
+		}		  	
+	} 
+	
+	else
+	{
+		
+    //no button pressed
+
+	}
 ?>
 
 <!DOCTYPE html>
@@ -90,11 +117,6 @@
 				</form>
 			</div>
 			
-			<div class="row" style="margin-top:20px;">
-				<form class="form-inline col-md-5 col-md-offset-4" method="post">
-					<button type="submit" class="btn btn-primary" name="reportUserButton">Report User</button>
-				</form>
-			</div>
 		</div>
      	
       	<div class="col-sm-5" id="rightcolumn">
