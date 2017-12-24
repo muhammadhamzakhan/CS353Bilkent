@@ -24,7 +24,7 @@
 	 	//if the name and password is blank, ask the user to login if he wants to continue
 	 	if($name == "" && $password == ""){
 			echo "<script>alert('Please login')</script>";
-    		header("Refresh:0");
+    			header("Refresh:0");
 			exit;
 		}
 		//Else if only one of the fields were left empty, warn the user!
