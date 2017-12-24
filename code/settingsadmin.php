@@ -417,42 +417,63 @@
 		  	<?php
 			  $sql = "SELECT username, COUNT(ID) as EntryNum FROM Entry_Combined_View GROUP BY username ORDER BY EntryNum DESC";
 				$result = mysqli_query($conn, $sql);
-
 				$sql1 = "SELECT username, COUNT(ID) as TopicNum FROM Topic_Combined_View GROUP BY username ORDER BY TopicNum DESC";
 				$result1 = mysqli_query($conn, $sql1);
 				$usernameArr = array();
+				$usernameArrEntry = array();
+				$usernameArrTopic = array();
 				$entryCountArr = array();
 				$topicCountArr = array();
+				$entryCountArrF = array();
+				$topicCountArrF = array();
 
 				while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-				  $usernameArr[] = $row["username"];
+				  $usernameArrEntry[] = $row["username"];
 				  $entryCountArr[] = $row["EntryNum"];
 				}
-
 				while($row = mysqli_fetch_array($result1,MYSQLI_ASSOC)) {
-				  $key = array_search($row["username"], $usernameArr);
-					if($row["TopicNum"] != "")	
-				  		$topicCountArr[$key] = $row["TopicNum"];
-					else
-						$topicCountArr[$key] = 0;
+				  $usernameArrTopic[] = $row["username"];
+				  $topicCountArr[] = $row["TopicNum"];
 				}
-
-				for($i = 0; $i < sizeof($usernameArr); $i++)
+				$usernameArr = array_merge($usernameArrEntry, $usernameArrTopic);
+				$size = 0;
+				for($i = 0; $i < sizeof($usernameArr); $i++){
+					$line = $usernameArr[$i];
+					$prev = array_slice($usernameArr,0,$i);
+					if(!in_array($line, $prev)){
+						$size++;
+						if(in_array($line, $usernameArrEntry))
+						{
+							$key = array_search($line, $usernameArrEntry);
+							$entryCountArrF[] = $entryCountArr[$key]; 
+						}
+						else
+							$entryCountArrF[] = 0;
+						if(in_array($line, $usernameArrTopic))
+						{
+							$key = array_search($line, $usernameArrTopic);
+							$topicCountArrF[] = $topicCountArr[$key]; 
+						}
+						else
+							$topicCountArrF[] = 0;
+					}
+				}
+				for($i = 0; $i < $size; $i++)
 				{					
 					echo "<tr>";
 					echo "<th scope='row'>".($i+1)."</th>";
 				  //username is $usernameArr[$i]
 					echo "<td>".$usernameArr[$i]."</td>";					
 				  //topic count is $topicCount[$i]
-					if($topicCountArr[$i])
-						echo "<td>".$topicCountArr[$i]."</td>";
+					if($topicCountArrF[$i])
+						echo "<td>".$topicCountArrF[$i]."</td>";
 					else
 						echo "<td>0</td>";
 					 //entry count is $entryCount[$i]
-					echo "<td>".$entryCountArr[$i]."</td>";
+					echo "<td>".$entryCountArrF[$i]."</td>";
 					echo "</tr>";
 				}
-			?>	
+			?>		
 		  </tbody>
 		</table>			
       </div>
