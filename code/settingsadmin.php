@@ -53,7 +53,7 @@
 			{
 				$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 			  	$banned_id = $row['ID'];
-			  	$sql = "INSERT INTO AdminBan VALUES ('$uid', '$banned_id')";
+			  	$sql = "INSERT INTO AdminBan (adminID, bannedID) VALUES ('$uid', '$banned_id')";
 			  	$result = mysqli_query($conn, $sql);
 			  	if($result)
 				{
@@ -93,7 +93,7 @@
 			{
 			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 			  $unblocked_id = $row['ID'];
-			  $sql = "DELETE FROM UserBlock WHERE blockerID = '$uid' AND blockedID = '$unblocked_id')";
+			  $sql = "DELETE FROM UserBlock WHERE blockerID = '$uid' AND blockedID = '$unblocked_id'";
 			  $result = mysqli_query($conn, $sql);
 			  if($result)
 			  {
@@ -102,6 +102,10 @@
 			  }
 			}			
   		}
+	}
+	else if(isset($_POST['unbanUserButton']))
+	{
+		
 	}
 	else
 	{
@@ -199,7 +203,7 @@
 	  <div class="col-xs-6">
 	  	<form class="form-inline" method="post">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unbanuser" placeholder="Username" name="unbanUser">
-			<button type="submit" class="btn btn-primary" name="banUserButton">Unban User</button>
+			<button type="submit" class="btn btn-primary" name="unbanUserButton">Unban User</button>
 		</form>
       </div>
   	</div>
@@ -270,8 +274,8 @@
 				$result = mysqli_query($conn, $sql);				
 				if($result){
 				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
-					  	$bannedNames[] = row['username'];
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					  	$bannedNames[] = $row['username'];
 						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
 					}
 				  }
@@ -301,13 +305,13 @@
 				$result = mysqli_query($conn, $sql);
 				if($result){
 				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
-					  $reportDates[] = row['date']; 
-					  $reportMessages[] = row['message']; 
-					  $reporterID[] = row['userID']; 
-					  $reporterNames[] = row['username']; 
-					  $reportMessages[] = row['message']; 
-					  $reportTypes[] = row['reportType'];   
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					  $reportDates[] = $row['date']; 
+					  $reportMessages[] = $row['message']; 
+					  $reporterID[] = $row['userID']; 
+					  $reporterNames[] = $row['username']; 
+					  $reportMessages[] = $row['message']; 
+					  $reportTypes[] = $row['reportType'];   
 					}
 				  }
 				}
