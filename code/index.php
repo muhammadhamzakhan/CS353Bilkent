@@ -107,7 +107,7 @@
 		
 		<div class="row">
 			<div class="col-sm-4 col-sm-offset-0">
-				<label>GO</label>
+			
 			</div>
 			<div class="col-sm-4">
       			<button type="submit" class="btn btn-primary">Lets Go!</button>

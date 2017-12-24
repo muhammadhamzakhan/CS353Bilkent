@@ -103,7 +103,7 @@
     </nav>
 				<div class="row">					
 					<div class="col-sm-3" id="friendlist">
-						<h3>Following List</h3>		  
+						<h3>User List</h3>		  
 						<!-- Show the list of available users -->
 						<ul class="list-group">						
 							<?php
