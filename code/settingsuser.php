@@ -42,27 +42,6 @@
 		  	}
 		}
 	} 
-	else if(isset($_POST['banUserButton']))
-	{
-		$banned_name = test_input($_POST['banUser']);
-		$sql = "SELECT ID FROM User WHERE username = '$banned_name'";
-		$result = mysqli_query($conn, $sql);
-		if($result)
-		{
-			if(mysqli_num_rows($result) > 0)
-			{
-				$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-			  	$banned_id = $row['ID'];
-			  	$sql = "INSERT INTO AdminBan VALUES ('$uid', '$banned_id')";
-			  	$result = mysqli_query($conn, $sql);
-			  	if($result)
-				{
-					echo "<script>alert('User Successfully Banned')</script>";
-					header("Refresh:0");
-				}
-		  	}
-		}				
-	}
 	else if(isset($_POST['changeEmailButton']))
 	{
 		$newEmail = $_POST['changeEmail'];
@@ -70,17 +49,6 @@
 		$result = mysqli_query($conn, $sql);
 		echo "<script>alert('Email Successfully Changed')</script>";
 		header("Refresh:0");
-	}
-	else if(isset($_POST['addCategoryButton']))
-	{
-		$new_category_name = $_POST['addCategory'];
-		$sql = "INSERT INTO Category VALUES ('$new_category_name')";
-	  	$result = mysqli_query($conn, $sql);
-	  	if($result)
-		{
-			echo "<script>alert('Category Successfully Added')</script>";
-			header("Refresh:0");
-	  	}
 	}
 	else if(isset($_POST['unblockUserButton']))
 	{
@@ -93,11 +61,32 @@
 			{
 			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
 			  $unblocked_id = $row['ID'];
-			  $sql = "DELETE FROM UserBlock WHERE blockerID = '$uid' AND blockedID = '$unblocked_id')";
+			  $sql = "DELETE FROM UserBlock WHERE blockerID = '$uid' AND blockedID = '$unblocked_id'";
 			  $result = mysqli_query($conn, $sql);
 			  if($result)
 			  {
 				echo "<script>alert('User Successfully Unblocked')</script>";
+				header("Refresh:0");
+			  }
+			}			
+  		}
+	}
+	else if(isset($_POST['unfollowButton']))
+	{
+		$unfollow_name = $_POST['unfollow'];
+		$sql = "SELECT ID FROM User WHERE username = '$unfollow_name'";		
+  		$result = mysqli_query($conn, $sql);
+  		if($result)
+		{
+    		if(mysqli_num_rows($result) > 0)
+			{
+			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  $unfollowed_id = $row['ID'];
+			  $sql = "DELETE FROM UserFollow WHERE followerID = '$uid' AND followedID = '$unfollowed_id'";
+			  $result = mysqli_query($conn, $sql);
+			  if($result)
+			  {
+				echo "<script>alert('User Successfully Unfollowed')</script>";
 				header("Refresh:0");
 			  }
 			}			
@@ -146,7 +135,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
-            <li><a href="settingsadmin.php">Settings</a></li>
+            <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>
         </div>
@@ -180,30 +169,29 @@
 		</form>
       </div>
 	  
-	  <div class="col-xs-6">     	
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unfollow" placeholder="Username" name="unfollow">
+			<button type="submit" class="btn btn-primary" name="unfollowButton">Unfollow</button>
+		</form>
+      </div>
+  	</div>
+  	
+  	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
 	  	<form class="form-inline" method="post">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unblockUser" placeholder="Username" name="unblockUser">
 			<button type="submit" class="btn btn-primary" name="unblockUserButton">Unblock User</button>
 		</form>
       </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">     	
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unfollow" placeholder="Username" name="unfollow">
-			<button type="submit" class="btn btn-primary" name="unfollowButton">Unfollow User</button>
-		</form>
-      </div>
 	  
 	  <div class="col-xs-6">
-		  
+	  	
       </div>
   	</div>
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-     	
 	  	<div id="blocklist">
 			<h3>Your Block List:</h3>
 			<ul class="list-group">
@@ -223,32 +211,34 @@
 				}
 			?>
 			</ul>
-		</div>	
+		</div>  	
       </div>
-	  
-	  <div class="col-xs-6">
-     	<div id="following">
+      
+      <div class="col-xs-6">
+	  		<div id="following">
 			<h3>Following:</h3>
 			<ul class="list-group">
 			<?php 
-				$followedNames = array();
-				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
+				$followedIDs = array();
+				$sql = "SELECT username FROM UserFollow JOIN User ON (UserFollow.followedID = User.ID)  WHERE followerID = '$uid'";
 				$result = mysqli_query($conn, $sql);
 				if($result){
 				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
-					  	$bannedNames[] = row['username'];
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					  	$followedIDs [] = $row['username'];
 						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
 					}
 				  }
+
 					else
 						echo "<li class='list-group-item'> You Are Not Following Anyone";
 				}
 			?>
 			</ul>
-		</div>
+			</div>
       </div>
-  	</div>	
+  	</div>		
+	
 </div>
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.js"></script>

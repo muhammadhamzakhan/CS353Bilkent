@@ -235,7 +235,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
-            <li><a href="settingsadmin.php">Settings</a></li>
+            <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>
         </div>
@@ -260,6 +260,22 @@
       </div>
 		
   	</div>
+  	
+  	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="addcategory" placeholder="Category Name" name="addCategory">
+			<button type="submit" class="btn btn-primary" name="addCategoryButton">Add Category</button>
+		</form>
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="removeCategory" placeholder="Category Name" name="removeCategory">
+			<button type="submit" class="btn btn-primary" name="removeCategoryButton">Remove Category</button>
+		</form>
+      </div>
+  	</div>
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
@@ -273,6 +289,22 @@
 	  	<form class="form-inline" method="post">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="banUser" placeholder="Username" name="banUser">
 			<button type="submit" class="btn btn-primary" name="banUserButton">Ban User</button>
+		</form>
+      </div>
+  	</div>
+  	
+  	<div class="row" style="margin-top:20px;">
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unblockUser" placeholder="Username" name="unblockUser">
+			<button type="submit" class="btn btn-primary" name="unblockUserButton">Unblock User</button>
+		</form>
+      </div>
+	  
+	  <div class="col-xs-6">
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unbanuser" placeholder="Username" name="unbanUser">
+			<button type="submit" class="btn btn-primary" name="unbanUserButton">Unban User</button>
 		</form>
       </div>
   	</div>
@@ -300,10 +332,7 @@
 			</ul>
 		</div>
   		
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unblockUser" placeholder="Username" name="unblockUser">
-			<button type="submit" class="btn btn-primary" name="unblockUserButton">Unblock User</button>
-		</form>
+	  	
       </div>
 	  
 	  <div class="col-xs-6">
@@ -328,56 +357,15 @@
 			</ul>
 		</div>
   	
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unbanuser" placeholder="Username" name="unbanUser">
-			<button type="submit" class="btn btn-primary" name="unbanUserButton">Unban User</button>
-		</form>
-      </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="addcategory" placeholder="Category Name" name="addCategory">
-			<button type="submit" class="btn btn-primary" name="addCategoryButton">Add Category</button>
-		</form>
-      </div>
-	  
-	  <div class="col-xs-6">
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="removeCategory" placeholder="Category Name" name="removeCategory">
-			<button type="submit" class="btn btn-primary" name="removeCategoryButton">Remove Category</button>
-		</form>
-      </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
-     
-      </div>
-	  
-	  <div class="col-xs-6">
-      </div>
-  	</div>
-	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
 	  	
       </div>
-	  
-	  <div class="col-xs-6">
-	  	
-      </div>
-  	</div>
+  	</div>	
 	
-	<div class="row" style="margin-top:20px;">
-	  <div class="col-xs-6">
-	  	
-		</div>	
-      </div>
-	  
-<div class="col-xs-6">
-	  	<div id="following">
+	
+	
+	<div class="row" style="margin-top:20px;">	  
+		<div class="col-xs-6">
+	  		<div id="following">
 			<h3>Following:</h3>
 			<ul class="list-group">
 			<?php 
@@ -397,7 +385,7 @@
 				}
 			?>
 			</ul>
-		</div>
+			</div>
      	
      	
 	  	<form class="form-inline" method="post">
@@ -406,6 +394,10 @@
 		</form>
      
       </div>
+      
+      <div class="col-xs-6">
+	  	
+		</div>
   	</div>
   	
   	<div class="row" style="margin-top:20px;">
