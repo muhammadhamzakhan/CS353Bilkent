@@ -71,12 +71,6 @@
           <a class="navbar-brand" href="home.php">Servo</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="topFixedNavbar1">
-          <form class="navbar-form navbar-left" role="search" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search" name="searchInput">
-            </div>
-            <button type="submit" class="btn btn-default" name="searchButton">Submit</button>
-          </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
@@ -202,7 +196,7 @@
 						$lentryTopicName[] = $row["topicName"];
 						$topicid = $row["topicsID"];
 						$friendid =$row["userID"];
-						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>"; 
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
 					}
 				}
 				else
@@ -216,7 +210,8 @@
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
 						$topicid = $row["ID"];
 						$friendid =$row["userID"];
-						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
+//						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic ".$row["content"]; 
 					}
 				}
 				else
