@@ -80,7 +80,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
-            <li><a href="settingsadmin.php">Settings</a></li>
+            <li><a href="settings.php">Settings</a></li>
             <li><a href="logout.php">Logout</a></li>
           </ul>
         </div>
