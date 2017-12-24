@@ -105,7 +105,24 @@
 	}
 	else if(isset($_POST['unbanUserButton']))
 	{
-		
+		$unbanned_name = $_POST['unbanUser'];
+		$sql = "SELECT ID FROM User WHERE username = '$unbanned_name'";
+  		$result = mysqli_query($conn, $sql);
+  		if($result)
+		{
+    		if(mysqli_num_rows($result) > 0)
+			{
+			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  $unbanned_id = $row['ID'];
+			  $sql = "DELETE FROM AdminBan WHERE adminID = '$uid' AND bannedID = '$unbanned_id'";
+			  $result = mysqli_query($conn, $sql);
+			  if($result)
+			  {
+				echo "<script>alert('User Successfully Unbanned')</script>";
+				header("Refresh:0");
+			  }
+			}			
+  		}
 	}
 	else
 	{
