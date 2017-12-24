@@ -1,0 +1,10 @@
+$uid is userid
+$sql = "SELECT isAdmin FROM User WHERE ID = '$uid'";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+if($row['isAdmin'] == 1){
+  //redirect to admin
+}
+else{
+  //redirect to pleb
+}
