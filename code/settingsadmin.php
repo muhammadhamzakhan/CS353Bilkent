@@ -279,6 +279,27 @@
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
+	  	<div id="blocklist">
+			<h3>Your Block List:</h3>
+			<ul class="list-group">
+			<?php 
+				$blockedNames = array();
+				$sql = "SELECT username FROM UserBlock JOIN User ON (User.ID = UserBlock.blockedID) WHERE UserBlock.blockerID = '$uid'";
+				$result = mysqli_query($conn, $sql);
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+						$blockedNames[] = $row['username'];
+						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
+					}
+				  }
+					else
+						echo "<li class='list-group-item'> You Don't Have Any Blocked Users";
+				}
+			?>
+			</ul>
+		</div>
+  		
 	  	<form class="form-inline" method="post">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unblockUser" placeholder="Username" name="unblockUser">
 			<button type="submit" class="btn btn-primary" name="unblockUserButton">Unblock User</button>
@@ -286,6 +307,27 @@
       </div>
 	  
 	  <div class="col-xs-6">
+	  	<div id="banlist">
+			<h3>System Ban List:</h3>
+			<ul class="list-group">
+			<?php 
+				$bannedNames = array();
+				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
+				$result = mysqli_query($conn, $sql);				
+				if($result){
+				  if(mysqli_num_rows($result) > 0){
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					  	$bannedNames[] = $row['username'];
+						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
+					}
+				  }
+					else
+						echo "<li class='list-group-item'> No Users Have Been Banned From The Site";
+				}	
+			?>
+			</ul>
+		</div>
+  	
 	  	<form class="form-inline" method="post">
   			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unbanuser" placeholder="Username" name="unbanUser">
 			<button type="submit" class="btn btn-primary" name="unbanUserButton">Unban User</button>
@@ -315,58 +357,16 @@
       </div>
 	  
 	  <div class="col-xs-6">
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unfollow" placeholder="Username" name="unfollow">
-			<button type="submit" class="btn btn-primary" name="unfollowButton">Unfollow</button>
-		</form>
       </div>
   	</div>
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-	  	<div id="blocklist">
-			<h3>Your Block List:</h3>
-			<ul class="list-group">
-			<?php 
-				$blockedNames = array();
-				$sql = "SELECT username FROM UserBlock JOIN User ON (User.ID = UserBlock.blockedID) WHERE UserBlock.blockerID = '$uid'";
-				$result = mysqli_query($conn, $sql);
-				if($result){
-				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-						$blockedNames[] = $row['username'];
-						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
-					}
-				  }
-					else
-						echo "<li class='list-group-item'> You Don't Have Any Blocked Users";
-				}
-			?>
-			</ul>
-		</div>	
+	  	
       </div>
 	  
 	  <div class="col-xs-6">
-	  	<div id="banlist">
-			<h3>System Ban List:</h3>
-			<ul class="list-group">
-			<?php 
-				$bannedNames = array();
-				$sql = "SELECT username FROM AdminBan JOIN User ON (User.ID = AdminBan.bannedID) WHERE AdminBan.adminID = '$uid'";
-				$result = mysqli_query($conn, $sql);				
-				if($result){
-				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-					  	$bannedNames[] = $row['username'];
-						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
-					}
-				  }
-					else
-						echo "<li class='list-group-item'> No Users Have Been Banned From The Site";
-				}	
-			?>
-			</ul>
-		</div>
+	  	
       </div>
   	</div>
 	
@@ -398,6 +398,13 @@
 			?>
 			</ul>
 		</div>
+     	
+     	
+	  	<form class="form-inline" method="post">
+  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="unfollow" placeholder="Username" name="unfollow">
+			<button type="submit" class="btn btn-primary" name="unfollowButton">Unfollow</button>
+		</form>
+     
       </div>
   	</div>
   	
