@@ -12,10 +12,10 @@
 			$comment = "";
 		} else {
 			$comment = test_input($_POST["comment"]);
+			$category = test_input($_POST["Category"]);
+			$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
+			$conn->query($sql);
 		}
-		$category = test_input($_POST["Category"]);
-		$sql = "INSERT INTO Topic (content,userID, categoryName) VALUES('$comment', '$userID', '$category')";
-		$conn->query($sql);
 	}
 
 	function test_input($data) {
