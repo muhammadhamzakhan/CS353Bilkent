@@ -124,6 +124,69 @@
 			}			
   		}
 	}
+	else if(isset($_POST['unfollowButton']))
+	{
+		$unfollow_name = $_POST['unfollow'];
+		$sql = "SELECT ID FROM User WHERE username = '$unfollow_name'";		
+  		$result = mysqli_query($conn, $sql);
+  		if($result)
+		{
+    		if(mysqli_num_rows($result) > 0)
+			{
+			  $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+			  $unfollowed_id = $row['ID'];
+			  $sql = "DELETE FROM UserFollow WHERE followerID = '$uid' AND followedID = '$unfollowed_id'";
+			  $result = mysqli_query($conn, $sql);
+			  if($result)
+			  {
+				echo "<script>alert('User Successfully Unfollowed')</script>";
+				header("Refresh:0");
+			  }
+			}			
+  		}
+	}
+	else if(isset($_POST['removeCategoryButton']))
+	{
+		$category_name = $_POST['removeCategory'];
+		$sql = "SELECT ID FROM Topic_Combined_View WHERE categoryName = '$category_name'";		
+  		$result = mysqli_query($conn, $sql);
+		$topicIDs = array();
+  		if($result)
+		{
+			while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+				$topicIDs[] = $row['ID'];
+			}
+		}
+		$entryIDs = array();
+		foreach($topicIDs as $tid){
+			$sql = "SELECT ID FROM Entry WHERE topicsID = '$tid'";		
+  			$result = mysqli_query($conn, $sql);
+  			if($result)
+			{
+				while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					$entryIDs[] = $row['ID'];
+				}
+			}
+		}
+		foreach($entryIDs as $eid){
+			$sql = "DELETE FROM Favorite WHERE contentID = '$eid' AND isInstanceTopic = 0";
+			$result = mysqli_query($conn, $sql);
+		}
+		foreach($entryIDs as $eid){
+			$sql = "DELETE FROM Rating WHERE entryID = '$eid'";
+			$result = mysqli_query($conn, $sql);
+		}
+		foreach($entryIDs as $eid){
+			$sql = "DELETE FROM Entry WHERE ID = '$eid'";
+			$result = mysqli_query($conn, $sql);
+		}
+		foreach($topicIDs as $tid){
+			$sql = "DELETE FROM Topic WHERE ID = '$tid'";
+			$result = mysqli_query($conn, $sql);
+		}
+		$sql = "DELETE FROM Category WHERE name = '$category_name'";
+		$result = mysqli_query($conn, $sql);
+	}
 	else
 	{
 		
