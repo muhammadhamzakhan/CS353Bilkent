@@ -243,10 +243,7 @@
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-	  	<form class="form-inline" method="post">
-  			<input type="input" class="form-control mb-2 mr-sm-2 mb-sm-0" id="removeReport" placeholder="Report ID" name="removeReport">
-			<button type="submit" class="btn btn-primary" name="removeReportButton">Remove Report</button>
-		</form>
+     
       </div>
 	  
 	  <div class="col-xs-6">
@@ -307,52 +304,7 @@
 	
 	<div class="row" style="margin-top:20px;">
 	  <div class="col-xs-6">
-	  	<div id="reports">
-			<h3>Reports:</h3>
-			<ul class="list-group">
-			<?php 
-				$reportDates = array();
-				$reportMessages = array();
-				$reporterID = array();
-				$reporterNames = array();
-				$reportMessages = array();
-				$reportTypes = array();
-
-				$sql = "SELECT * FROM Report JOIN User ON (User.ID = Report.userID)";
-				$result = mysqli_query($conn, $sql);
-				if($result){
-				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-					  $reportDates[] = $row['date']; 
-					  $reportMessages[] = $row['message']; 
-					  $reporterID[] = $row['userID']; 
-					  $reporterNames[] = $row['username']; 
-					  $reportMessages[] = $row['message']; 
-					  $reportTypes[] = $row['reportType'];   
-					}
-				  }
-				}
-
-				for($i = 0; $i < sizeof($reporterID); $i){
-				  //a user got reported
-				  if(reportTypes[$i] == 0){
-				  //print
-					  echo "<li class='list-group-item'>User <a href='user.php?varname=$topicid'>".$row["username"]."</a> Got Reported By User <a href='user.php?varname=$topicid'>".$row["username"]."</a>"; 
-				  }
-				  //a topic got reported
-				  else if(reportTypes[$i] == 1){
-				  //print
-					  echo "<li class='list-group-item'>Friend <a href='user.php?varname=$topicid'>".$row["username"]."</a> Reported Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
-				  }
-				  //an entry got reported
-				  else{
-				  //print
-					  echo "<li class='list-group-item'>Friend <a href='user.php'>".$row["username"]."</a> Reported Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>";
-				  }
-					// no reports logic?
-				}	
-			?>
-			</ul>
+	  	
 		</div>	
       </div>
 	  
