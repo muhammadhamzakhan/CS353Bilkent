@@ -9,7 +9,7 @@ $userID = $_SESSION['userid'];
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Untitled Document</title>
+  <title>Servo | Topic</title>
   <!-- Bootstrap -->
   <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -150,7 +150,8 @@ $userID = $_SESSION['userid'];
             <input type="checkbox" name="chkbox" id = "chk0" onclick="showHide()"/>
             <label for = "chk0">Expand</label>
             <br />
-            <label class="hidden0">Edit your Topic here</label><input type="text" name="editTopic" class = "hidden0"/>
+            <label class="hidden0">Edit your Topic here</label><input type="textarea" name="editTopic" class = "hidden0" rows="3" style="width:100%;" 
+            value = "<?php echo $rows['content']?>"/>
             <input type="submit" name="expandTopic" value="Expand" class = "hidden0"> 
           </form>
         <?php
@@ -184,23 +185,21 @@ $userID = $_SESSION['userid'];
         </style>
         <form action = "topic.php" method = "POST">
           <input type="checkbox" name="chkboxentry" id =<?php echo "\"".$rows['ID']."\"";?> onclick="showHideEntry(<?php echo $rows['ID'];?>)">
-         <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
+         <input type="texta" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
           <label for = <?php echo "\"".$rows['ID']."\"";?>>Expand</label>
           <br />
-          <label class=<?php echo "\"unhidden".$rows['ID']."\"";?>></label><input type="text" 
-          name="editEntry" class=<?php echo "\"unhidden".$rows['ID']."\"";?>/>
+          <label class=<?php echo "\"unhidden".$rows['ID']."\"";?>></label><input type="textarea" 
+          name="editEntry" rows="4" style="width:100%;" value = "<?php echo $rows['content'];?>" class=<?php echo "\"unhidden".$rows['ID']."\"";?>/>
           <input type="submit" name="expandEntry" value="Expand" class=<?php echo "\"unhidden".$rows['ID']."\"";?>> 
         </form>
         <?php
       } 
       else{
         ?>
-          <form>
+          <form method = "POST" action = "topic.php">
             <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
-
             <input type="submit" value = "+1" name="ratingUp" id = "rateUp" >
             <input type="submit" value = "-1" name="ratingDown" >
-            <input type="submit" value = "Report" name="report">
           </form>
         <?php
       } 
@@ -211,25 +210,20 @@ $userID = $_SESSION['userid'];
   if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
     $entryID = test_input($_POST["entryID"]);    
     $up = 1;
-    $sql = "INSERT INTO rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
-    $conn->query($sql);
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    mysqli_query($conn, $sql);
     header("Refresh:0");
   }
   //rating down
   if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
     $entryID = test_input($_POST["entryID"]);    
     $down = -1;
-    $sql = "INSERT INTO rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
     $conn->query($sql);
     header("Refresh:0");
   }
-  //reporting
-  if(isset($_POST['report']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-    $entryID = test_input($_POST["entryID"]);    
-    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
-    $conn->query($sql);
-    //header("Refresh:0");
-  }
+
+
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -267,27 +261,25 @@ $userID = $_SESSION['userid'];
 
   <!DOCTYPE html>
   <html>
-  <head>
-    <title>Servo | Topic</title>
-  </head>
+
   <body>
       <!-- JAVA SCRIPT to show or hide the Expand edit box -->
-  	 <script type="text/javascript">
+     <script type="text/javascript">
          
-     		function showHide(){
-     			var checkbox = document.getElementById("chk0");
-     			var hiddeninputs = document.getElementsByClassName("hidden0");
-     			
-     			for (var i = 0; i != hiddeninputs.length; i++) {
-     				//try{
+        function showHide(){
+          var checkbox = document.getElementById("chk0");
+          var hiddeninputs = document.getElementsByClassName("hidden0");
+          
+          for (var i = 0; i != hiddeninputs.length; i++) {
+            //try{
             if(checkbox.checked){
-     					hiddeninputs[i].style.display = "block";
-     				}
-     				else{
+              hiddeninputs[i].style.display = "block";
+            }
+            else{
               hiddeninputs[i].style.display = "none";
-     				}//}catch(err){}
-     			}
-     		}
+            }//}catch(err){}
+          }
+        }
         function showHideEntry(id){
           var checkbox = document.getElementById(""+id);
           var hiddeninputs = document.getElementsByClassName("unhidden"+id);
@@ -303,7 +295,7 @@ $userID = $_SESSION['userid'];
           }
         }
         
-  	</script>
+    </script>
 
     <style>
           .hidden0{
@@ -314,12 +306,10 @@ $userID = $_SESSION['userid'];
           }
     </style>
 
-  	<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-   		Comment: <textarea name="comment" rows="5" cols="40"></textarea>
-    		<input type="submit" name="submit" value="Submit">  
-   	</form>
-   	<a href="logout.php">Logout</a>
-    <a href="home.php">Home</a>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+      Comment: <textarea name="comment" rows="5" cols="40"></textarea>
+        <input type="submit" name="submitEntry" value="Submit">  
+    </form>
 
   </body>
   </html>
