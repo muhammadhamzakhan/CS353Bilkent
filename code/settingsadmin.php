@@ -366,8 +366,8 @@
 				$result = mysqli_query($conn, $sql);
 				if($result){
 				  if(mysqli_num_rows($result) > 0){
-					while($row = mysqli_fetch_array($searchuserresult,MYSQLI_ASSOC)) {
-					  	$bannedNames[] = row['username'];
+					while($row = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					  	$bannedNames[] = $row['username'];
 						echo "<a href='#' class='list-group-item list-group-item-action'>".$row['username']."</a>";
 					}
 				  }
