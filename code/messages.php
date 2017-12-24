@@ -47,7 +47,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Untitled Document</title>
+	<title>Messages</title>
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.css" rel="stylesheet">
 
@@ -94,7 +94,7 @@
     </nav>
 				<div class="row">					
 					<div class="col-sm-3" id="friendlist">
-						<h3>Following List:</h3>		  
+						<h3>Following List</h3>		  
 						<!-- Show the list of available users -->
 						<ul class="list-group">						
 							<?php
@@ -118,7 +118,7 @@
 						</ul>
 					</div>		
 
-					<div class="col-sm-5" id = "middlecolumn">
+					<div class="col-sm-5" id = "middlecolumn">					
 						<!-- Show the messages -->
 						<?php
 							if(isset($_GET['recipient']) && !empty($_GET['recipient'])){
@@ -164,7 +164,7 @@
 										
 										//generate the form
 										?>
-										
+										<h3>Message</h3>
 										<div>
 										<form name="send_msg" method="post">
 											<textarea name="message_field" rows="3" style="width:100%;"></textarea>
