@@ -37,6 +37,13 @@
 	else if(isset($_POST['followUserButton']))
 	{
 		  $followed_id = $_GET["varname"];
+		  $sql = "INSERT INTO UserFollow VALUES('$uid','$followed_id'";
+		  $result = mysqli_query($conn, $sql);
+		  if($result)
+		  {
+			echo "<script>alert('User Successfully Followed')</script>";
+			header("Refresh:0");
+		  }	  		
 		
 	}
 	else
