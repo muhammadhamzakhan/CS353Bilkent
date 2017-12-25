@@ -71,6 +71,12 @@
           <a class="navbar-brand" href="home.php">Servo</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="topFixedNavbar1">
+          <form class="navbar-form navbar-left" role="search" method="post">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search" name="searchInput">
+            </div>
+            <button type="submit" class="btn btn-default" name="searchButton">Submit</button>
+          </form>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
@@ -176,7 +182,7 @@
 		<ul class="list-group">
 				<?php
 				$db = $conn;
-				$lastfentrysql = "SELECT * FROM entry_combined_view WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
+				$lastfentrysql = "SELECT * FROM Entry_Combined_View WHERE userID IN (SELECT ID AS UName FROM User JOIN UserFollow ON (UserFollow.followedID = User.ID && followerID = '$userID')) ORDER BY date DESC";
 				$lastfentryresult = mysqli_query($db, $lastfentrysql);
 				$lentryUsername = array();
 				$lentryUID = array();
@@ -196,7 +202,7 @@
 						$lentryTopicName[] = $row["topicName"];
 						$topicid = $row["topicsID"];
 						$friendid =$row["userID"];
-						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic ".$row["topicName"]; 
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Entry ".$row["content"]." On Topic <a href='topic.php?$topicid'>".$row["topicName"]."</a>"; 
 					}
 				}
 				else
@@ -210,8 +216,7 @@
 					while($row = mysqli_fetch_array($lastftopicresult,MYSQLI_ASSOC)) {
 						$topicid = $row["ID"];
 						$friendid =$row["userID"];
-//						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
-						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic ".$row["content"]; 
+						echo "<li class='list-group-item'>Friend <a href='user.php?varname=$friendid'>".$row["username"]."</a> Posted Topic <a href='topic.php?varname=$topicid'>".$row["content"]."</a>"; 
 					}
 				}
 				else
