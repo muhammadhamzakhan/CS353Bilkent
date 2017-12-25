@@ -5,7 +5,8 @@
 	$category = "";
 	
 	$comment = "";
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
+
 		if (empty($_POST["comment"])) {
 			$comment = "";
 		} else {
@@ -69,12 +70,6 @@
           <a class="navbar-brand" href="home.php">Servo</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="topFixedNavbar1">
-          <form class="navbar-form navbar-left" role="search" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search" name="searchInput">
-            </div>
-            <button type="submit" class="btn btn-default" name="searchButton">Submit</button>
-          </form>
           <ul class="nav navbar-nav navbar-right">
           	<?php
           		if(!empty($userID)){
