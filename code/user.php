@@ -2,7 +2,14 @@
 	include 'connect.php';
 	$uid = $_SESSION['userid'];
 	$friendID = $_GET["varname"];
-	
+	$username = "";
+	$sql = "SELECT username from User WHERE ID = '$friendID	'";
+	$result = $conn->query($sql);
+	if($result){
+		while($rows = $result->fetch_assoc()){
+			$username = $rows['username'];
+		}
+	}
 	//function to strip and test the input data
 	function test_input($data) 
 	{
@@ -11,7 +18,6 @@
 	  $data = htmlspecialchars($data);
 	  return $data;
 	}
-
 	if (isset($_POST['blockUserButton'])) 
 	{
     	//block user action
@@ -51,7 +57,6 @@
 	{
 		
     //no button pressed
-
 	}
 ?>
 
@@ -115,7 +120,7 @@
 					<button type="submit" class="btn btn-primary" name="blockUserButton">Block User</button>
 				</form>
 			</div>
-			
+			<?php ?>
 			<div class="row" style="margin-top:20px;">
 				<form class="form-inline col-md-7 col-md-offset-4" method="post">
 					<button type="submit" class="btn btn-primary" name="followUserButton">Follow User</button>
@@ -131,14 +136,24 @@
 		</div>
      	
       	<div class="col-sm-5" id="rightcolumn">
-			<h3>Users's Topics:</h3>
+      		<?php 
+      			if($uid == $friendID){
+      				?>
+      				<h3>My Topics:</h3>
+      				<?php
+      			}
+      			else{
+      		?>
+			<h3><?php echo $username;?>'s Topics:</h3>
+			<?php
+			}
+			?>
 			<ul class="list-group">
 				<?php 
 				
 				$userID = $friendID; 
 				$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
 				$usertopicsresult = mysqli_query($conn, $usertopicsql);
-
 				if(mysqli_num_rows($usertopicsresult) > 0)
 				{
 					while($row = mysqli_fetch_array($usertopicsresult,MYSQLI_ASSOC)) 
@@ -148,8 +163,7 @@
 					}
 				}
 				else
-					echo "<li class='list-group-item'> Your Friend Have Not Posted Any Topics";
-
+					echo "<li class='list-group-item'> Your Friend Has Not Posted Any Topics";
 				?>
 			</ul>
 		</div>		
