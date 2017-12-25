@@ -155,7 +155,6 @@ $userID = $_SESSION['userid'];
       }
       else{
         ?>
-          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite(<?php echo $topicsID;?>)"><label for = "setfavour">Add to Favourites</label>
         <?php
       }
       ?>
@@ -218,13 +217,6 @@ $userID = $_SESSION['userid'];
           </form>
         <?php
       } 
-      ?>
-      <form action = "topic.php" method = "POST">
-      <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
-      <input type="submit" name="favouriteEntry" value = "Add as Favourite" >
-
-      </form>
-      <?php
       echo "<br>";
 
     }
@@ -233,9 +225,10 @@ $userID = $_SESSION['userid'];
   if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
     $entryID = test_input($_POST["entryID"]);    
     $up = 1;
+    
     $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
     mysqli_query($conn, $sql);
-    header("Refresh:0");
+    //header("Refresh:0");
   }
   //rating down
   if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
@@ -250,12 +243,7 @@ $userID = $_SESSION['userid'];
     $sql = "INSERT INTO Favorite (userID, contentID, isInstanceTopic) VALUES('$userID', '$topicsID', 1)";
     $conn->query($sql);
   }
-  //add to favorite Entry
-  if(isset($_POST['favouriteEntry']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-    $entryID = test_input($_POST["entryID"]);
-    $sql = "INSERT INTO Favorite(userID, contentID, isInstanceTopic) VALUES('$userID', '$entryID', 0)";
-    $conn->query($sql);
-  }
+ 
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["comment"])) {
