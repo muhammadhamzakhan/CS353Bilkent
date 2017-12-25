@@ -139,7 +139,8 @@ $userID = $_SESSION['userid'];
   $result = $conn->query($sql);
   if($result){
     while($rows = $result->fetch_assoc()){
-      echo $rows['username'].": ".$rows['content'];
+      $topicuserID = $rows['userID'];
+      echo "<a href='user.php?varname=$topicuserID'>".$rows['username']."</a>".": ".$rows['content'];
       if($rows['userID'] == $userID){ 
         ?>
 
@@ -171,7 +172,8 @@ $userID = $_SESSION['userid'];
   $result = $conn->query($sql);
   if($result){
     while($rows = $result->fetch_assoc()){
-      echo $rows['username'].": ".$rows['content'];
+      $newuserID = $rows['userID'];
+      echo "<a href='user.php?varname=$newuserID'>".$rows['username']."</a>".": ".$rows['content'];
       echo "<br>";
       $IDentry = $rows['ID'];
       $newsql = "SELECT SUM(value) as ratingValue FROM Rating WHERE entryID = '$IDentry'";
