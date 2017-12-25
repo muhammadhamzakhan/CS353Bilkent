@@ -1,6 +1,78 @@
 <?php
 include 'connect.php';
 $userID = $_SESSION['userid'];
+$comment = "";
+  $entryID = "";
+  if(isset($_GET["varname"])){
+    $topicsID = $_GET["varname"];
+    $_SESSION['topicsID'] = $topicsID;
+  }
+  else {
+    $topicsID = $_SESSION['topicsID'];
+  }
+  //$userID = $_SESSION['userid'];
+  $username = "";
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+//rating up
+  if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $up = 1;
+    
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
+    mysqli_query($conn, $sql);
+    header("Refresh:0");
+  }
+  //rating down
+  if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);    
+    $down = -1;
+    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
+    $conn->query($sql);
+    header("Refresh:0");
+  }
+  //add to favorite Topic
+  if(isset($_POST['favouriteTopic'])){
+    $sql = "INSERT INTO Favorite (userID, contentID, isInstanceTopic) VALUES('$userID', '$topicsID', 1)";
+    $conn->query($sql);
+  }
+ 
+  //insert a new entry
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["comment"])) {
+      $comment = "";
+    } 
+    else {
+      $comment = test_input($_POST["comment"]);
+      $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
+      $conn->query($sql);
+      header("Refresh:0");
+    }
+   
+  }
+  //edit a topic
+  if (isset($_POST["editTopic"]) && !empty($_POST["editTopic"])){
+      $editedTopic = test_input($_POST["editTopic"]);
+      $sql = "UPDATE Topic SET content = '$editedTopic' WHERE ID = '$topicsID'";
+      $conn->query($sql);
+      header("Refresh:0");
+      //exit;
+  }
+  //edit an entry
+  if (isset($_POST["editEntry"]) && !empty($_POST["editEntry"])){
+       if (isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+          $entryID = test_input($_POST["entryID"]);
+       }   
+      $editedEntry = test_input($_POST["editEntry"]);
+      $sql = "UPDATE Entry SET content = '$editedEntry' WHERE ID = '$entryID'";
+      $conn->query($sql);
+      header("Refresh:0");
+     // exit;
+  }  
 ?>
 
 <!DOCTYPE html>
@@ -127,23 +199,7 @@ $userID = $_SESSION['userid'];
              // <?php
   //include 'connect.php';
   //include 'topicnew.php';
-  $comment = "";
-  $entryID = "";
-  if(isset($_GET["varname"])){
-    $topicsID = $_GET["varname"];
-    $_SESSION['topicsID'] = $topicsID;
-  }
-  else {
-    $topicsID = $_SESSION['topicsID'];
-  }
-  //$userID = $_SESSION['userid'];
-  $username = "";
-  function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
+  
    
   function upvote(){
   }
@@ -237,60 +293,8 @@ $userID = $_SESSION['userid'];
 
     }
   }
-  //rating up
-  if(isset($_POST['ratingUp']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-    $entryID = test_input($_POST["entryID"]);    
-    $up = 1;
-    
-    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$up')";
-    mysqli_query($conn, $sql);
-    //header("Refresh:0");
-  }
-  //rating down
-  if(isset($_POST['ratingDown']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-    $entryID = test_input($_POST["entryID"]);    
-    $down = -1;
-    $sql = "INSERT INTO Rating (userID, entryID, value) VALUES('$userID', '$entryID', '$down')";
-    $conn->query($sql);
-    header("Refresh:0");
-  }
-  //add to favorite Topic
-  if(isset($_POST['favouriteTopic'])){
-    $sql = "INSERT INTO Favorite (userID, contentID, isInstanceTopic) VALUES('$userID', '$topicsID', 1)";
-    $conn->query($sql);
-  }
- 
-  //insert a new entry
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["comment"])) {
-      $comment = "";
-    } 
-    else {
-      $comment = test_input($_POST["comment"]);
-      $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
-      $conn->query($sql);
-      header("Refresh:0");
-    }
-   
-  }
-  //edit a topic
-  if (isset($_POST["editTopic"]) && !empty($_POST["editTopic"])){
-      $editedTopic = test_input($_POST["editTopic"]);
-      $sql = "UPDATE Topic SET content = '$editedTopic' WHERE ID = '$topicsID'";
-      $conn->query($sql);
-      header("Refresh:0");
-  }
-  //edit an entry
-  if (isset($_POST["editEntry"]) && !empty($_POST["editEntry"])){
-       if (isset($_POST["entryID"]) && !empty($_POST["entryID"])){
-          $entryID = test_input($_POST["entryID"]);
-       }   
-      $editedEntry = test_input($_POST["editEntry"]);
-      $sql = "UPDATE Entry SET content = '$editedEntry' WHERE ID = '$entryID'";
-      $conn->query($sql);
-      header("Refresh:0");
-  }  
- 
+  
+  //header("Location:topic.php?varname=$topicsID");
   ?> 
 
   <!DOCTYPE html>
