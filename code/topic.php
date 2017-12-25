@@ -155,6 +155,7 @@ $userID = $_SESSION['userid'];
       }
       else{
         ?>
+          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite(<?php echo $topicsID;?>)"><label for = "setfavour">Add to Favourites</label>
         <?php
       }
       ?>
