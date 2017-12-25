@@ -95,6 +95,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="topFixedNavbar1">
           <ul class="nav navbar-nav navbar-right">
+          	<?php
+          		//Show username in the Navbar if available
+          		if(!empty($username)){
+	    			echo "<li><a href=\"user.php?varname=$userID\">".$username."</a></li>";
+				}
+          	?>
             <li><a href="home.php" title="Home Page Link">Home</a></li>
             <li><a href="messages.php">Messages</a></li>
             <li><a href="settings.php">Settings</a></li>
