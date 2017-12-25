@@ -1,6 +1,7 @@
 <?php
 	include 'connect.php';
 	$uid = $_SESSION['userid'];
+	$friendID = $_GET["varname"];
 	
 	//function to strip and test the input data
 	function test_input($data) 
@@ -116,12 +117,6 @@
 			</div>
 			
 			<div class="row" style="margin-top:20px;">
-				<form class="form-inline col-md-6 col-md-offset-4" method="post">
-					<button type="submit" class="btn btn-primary" name="messageUserButton">Message User</button>
-				</form>
-			</div>
-			
-			<div class="row" style="margin-top:20px;">
 				<form class="form-inline col-md-7 col-md-offset-4" method="post">
 					<button type="submit" class="btn btn-primary" name="followUserButton">Follow User</button>
 				</form>
@@ -136,10 +131,10 @@
 		</div>
      	
       	<div class="col-sm-5" id="rightcolumn">
-			<h3>Friend's Topics:</h3>
+			<h3>Users's Topics:</h3>
 			<ul class="list-group">
 				<?php 
-
+				
 				$userID = $friendID; 
 				$usertopicsql = "SELECT ID, content FROM Topic WHERE userID = '$userID'";
 				$usertopicsresult = mysqli_query($conn, $usertopicsql);
