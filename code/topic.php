@@ -122,7 +122,6 @@ $userID = $_SESSION['userid'];
   else {
     $topicsID = $_SESSION['topicsID'];
   }
-
   //$userID = $_SESSION['userid'];
   $username = "";
   function test_input($data) {
@@ -133,9 +132,7 @@ $userID = $_SESSION['userid'];
   }
    
   function upvote(){
-
   }
-
   
   //fetch the topic
   $sql = "SELECT content, username, userID FROM Topic_Combined_View WHERE ID = '$topicsID'";
@@ -155,24 +152,40 @@ $userID = $_SESSION['userid'];
             <input type="submit" name="expandTopic" value="Expand" class = "hidden0"> 
           </form>
         <?php
-
       }
       else{
         ?>
-          <input type="checkbox" name="favour" id = "setfavour" onclick="addFavourite(<?php echo $topicsID;?>)"><label for = "setfavour">Add to Favourites</label>
-          <button>Report</button>
         <?php
       }
+      ?>
+      <form action = "topic.php" method = "POST">
+        <input type="submit" name="favouriteTopic" value = "Add as Favourite" >
+      </form>
+      <?php
     }
   }
   echo "<br>";
-
   //fetch the entries
+  $IDentry = "";
   $sql = "SELECT content, userID, username, ID FROM Entry_Combined_View WHERE topicsID = '$topicsID'";
   $result = $conn->query($sql);
   if($result){
     while($rows = $result->fetch_assoc()){
       echo $rows['username'].": ".$rows['content'];
+      echo "<br>";
+      $IDentry = $rows['ID'];
+      $newsql = "SELECT SUM(value) as ratingValue FROM Rating WHERE entryID = '$IDentry'";
+      $newresult = $conn->query($newsql);
+      if($newresult){
+        while($newrows = $newresult->fetch_assoc()){
+          if(!empty($newrows['ratingValue'])){
+            echo "Rating: ".$newrows['ratingValue'];
+          }
+          else{
+            echo "Rating : 0";
+          }
+        }
+      }
       if($rows['userID'] == $userID){ 
         ?>
         <style>
@@ -200,10 +213,19 @@ $userID = $_SESSION['userid'];
             <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
             <input type="submit" value = "+1" name="ratingUp" id = "rateUp" >
             <input type="submit" value = "-1" name="ratingDown" >
+
           </form>
         <?php
       } 
+      ?>
+      <form action = "topic.php" method = "POST">
+      <input type="text" name="entryID" value =<?php echo $rows['ID'];?> style = "display: none" />
+      <input type="submit" name="favouriteEntry" value = "Add as Favourite" >
+
+      </form>
+      <?php
       echo "<br>";
+
     }
   }
   //rating up
@@ -222,11 +244,19 @@ $userID = $_SESSION['userid'];
     $conn->query($sql);
     header("Refresh:0");
   }
-
-
+  //add to favorite Topic
+  if(isset($_POST['favouriteTopic'])){
+    $sql = "INSERT INTO Favorite (userID, contentID, isInstanceTopic) VALUES('$userID', '$topicsID', 1)";
+    $conn->query($sql);
+  }
+  //add to favorite Entry
+  if(isset($_POST['favouriteEntry']) && isset($_POST["entryID"]) && !empty($_POST["entryID"])){
+    $entryID = test_input($_POST["entryID"]);
+    $sql = "INSERT INTO Favorite(userID, contentID, isInstanceTopic) VALUES('$userID', '$entryID', 0)";
+    $conn->query($sql);
+  }
   //insert a new entry
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     if (empty($_POST["comment"])) {
       $comment = "";
     } 
@@ -235,7 +265,6 @@ $userID = $_SESSION['userid'];
       $sql = "INSERT INTO Entry (content,topicsID, userID) VALUES('$comment', '$topicsID', '$userID')";
       $conn->query($sql);
       header("Refresh:0");
-
     }
    
   }
