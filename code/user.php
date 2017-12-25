@@ -12,7 +12,7 @@
 	$username = "";
 	$sql = "SELECT username from User WHERE ID = '$friendID	'";
 	$result = $conn->query($sql);
-	$following;
+	$following ="";
 	if($result){
 		while($rows = $result->fetch_assoc()){
 			$username = $rows['username'];
