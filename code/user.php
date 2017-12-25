@@ -2,9 +2,17 @@
 	include 'connect.php';
 	$uid = $_SESSION['userid'];
 	$friendID = $_GET["varname"];
+
+	if(empty($friendID)){
+		header("Location:home.php");
+	}
+
+	
+
 	$username = "";
 	$sql = "SELECT username from User WHERE ID = '$friendID	'";
 	$result = $conn->query($sql);
+	$following;
 	if($result){
 		while($rows = $result->fetch_assoc()){
 			$username = $rows['username'];
@@ -18,6 +26,28 @@
 	  $data = htmlspecialchars($data);
 	  return $data;
 	}
+	//a function to check whether two users have blocked each other or not
+	//returns true if blocked
+	function is_blocked($user1_id, $user2_id, $db){
+		//user_1 should be logged in
+		if($user1_id != ""){
+			$sql = "SELECT * from UserBlock where ( (blockerID = '$user1_id') and (blockedID = '$user2_id') ) or ( (blockerID = '$user2_id') and (blockedID = '$user1_id') )";
+			$result = mysqli_query($db, $sql);
+
+			if( mysqli_num_rows($result) > 0 ){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
+
+	if(is_blocked($uid, $friendID, $conn)){
+		echo "<script>alert('You Are Not Allowed To Interact With This User!)</script>";
+		header("Location:home.php");
+	}
+
 	if (isset($_POST['blockUserButton'])) 
 	{
     	//block user action
@@ -44,10 +74,9 @@
 	else if(isset($_POST['followUserButton']))
 	{
 		  $followed_id = $_GET["varname"];
-		  $sql = "INSERT INTO UserFollow VALUES('$uid','$followed_id'";
+		  $sql = "INSERT INTO UserFollow VALUES('$uid','$followed_id')";
 		  $result = mysqli_query($conn, $sql);
-		  if($result)
-		  {
+		  if($result){
 			echo "<script>alert('User Successfully Followed')</script>";
 			header("Refresh:0");
 		  }	  		
@@ -97,8 +126,16 @@
           <ul class="nav navbar-nav navbar-right">
           	<?php
           		//Show username in the Navbar if available
-          		if(!empty($username)){
-	    			echo "<li><a href=\"user.php?varname=$uid\">".$username."</a></li>";
+          		if(!empty($uid)){
+	          		$sql = "SELECT username from User where ID = '$uid'";
+					$res = $conn->query($sql);
+
+					if($res){
+						$row = $res->fetch_assoc();
+						$username1 = $row["username"];
+
+						 echo "<li><a href=\"user.php?varname=$uid\">".$username1."</a></li>";
+					}
 				}
           	?>
             <li><a href="home.php" title="Home Page Link">Home</a></li>
@@ -122,7 +159,13 @@
 			</div>
 
 			<!--  -->
-
+			<?php
+				$sql1 = "SELECT * from UserFollow where followerID = $uid and followedID = $friendID";
+				$res1 = $conn->query($sql1);
+				if(mysqli_num_rows($res1) > 0){
+					$following = true;
+				}
+			?>
   		
 	  		<div class="row"  style="margin-top:20px;">
 				<form class="form-inline col-md-5 col-md-offset-4" method="post">
@@ -130,14 +173,14 @@
 				</form>
 			</div>
 			<?php ?>
-			<div class="row" style="margin-top:20px;">
-				<form class="form-inline col-md-7 col-md-offset-4" method="post">
+			<div class="row" style="margin-top:20px;"  >
+				<form class="form-inline col-md-7 col-md-offset-4" method="post" <?php if ($following){?>style="display:none"<?php } ?>>
 					<button type="submit" class="btn btn-primary" name="followUserButton">Follow User</button>
 				</form>
 			</div>
 			
-			<div class="row" style="margin-top:20px;">
-				<form class="form-inline col-md-5 col-md-offset-4" method="post">
+			<div class="row" style="margin-top:20px;" >
+				<form class="form-inline col-md-5 col-md-offset-4" method="post" <?php if (!$following){?>style="display:none"<?php } ?>>
 					<button type="submit" class="btn btn-primary" name="unfollowUserButton">Unfollow User</button>
 				</form>
 			</div>
