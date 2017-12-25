@@ -237,7 +237,7 @@
 						$row = $res->fetch_assoc();
 						$username = $row["username"];
 
-						 echo "<li><a href=\"user.php?varname=$userID\">".$username."</a></li>";
+						 echo "<li><a href=\"user.php?varname=$uid\">".$username."</a></li>";
 					}
 				}
           	?>

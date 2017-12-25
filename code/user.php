@@ -98,7 +98,7 @@
           	<?php
           		//Show username in the Navbar if available
           		if(!empty($username)){
-	    			echo "<li><a href=\"user.php?varname=$userID\">".$username."</a></li>";
+	    			echo "<li><a href=\"user.php?varname=$uid\">".$username."</a></li>";
 				}
           	?>
             <li><a href="home.php" title="Home Page Link">Home</a></li>
@@ -112,7 +112,7 @@
       <!-- /.container-fluid -->
     </nav>
 		
-	  	<div class="col-sm-5" id = "middlecolumn">
+	  	<div class="col-sm-5" id = "middlecolumn" <?php if ($friendID==$uid){?>style="display:none"<?php } ?>>
 	  	
 	  		<div class="row" style="margin-top:20px;">
 				<?php
@@ -120,8 +120,11 @@
 				
 				?>
 			</div>
+
+			<!--  -->
+
   		
-	  		<div class="row" style="margin-top:20px;">
+	  		<div class="row"  style="margin-top:20px;">
 				<form class="form-inline col-md-5 col-md-offset-4" method="post">
 					<button type="submit" class="btn btn-primary" name="blockUserButton">Block User</button>
 				</form>
