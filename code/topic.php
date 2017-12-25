@@ -2,7 +2,8 @@
 include 'connect.php';
 $userID = $_SESSION['userid'];
 $comment = "";
-  $entryID = "";
+$entryID = "";
+$topicsID = "";
   if(isset($_GET["varname"])){
     $topicsID = $_GET["varname"];
     $_SESSION['topicsID'] = $topicsID;
@@ -108,13 +109,7 @@ $comment = "";
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topFixedNavbar1" aria-expanded="false"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
           <a class="navbar-brand" href="home.php">Servo</a></div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="topFixedNavbar1">
-          <form class="navbar-form navbar-left" role="search" method="post">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search" name="searchInput">
-            </div>
-            <button type="submit" class="btn btn-default" name="searchButton">Submit</button>
-          </form>
+        
           <ul class="nav navbar-nav navbar-right">
             <?php
                 //Show username in the Navbar if available
